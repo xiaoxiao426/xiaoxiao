@@ -1,0 +1,61 @@
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="evenline">
+			<th class="collection-as-table"><input type="checkbox"
+				id="evidenceSuricataTitle"	onclick="allChangeCheckBox('evidenceSuricata','evidenceSuricataTitle');" /></th>
+			<th class="collection-as-table">分析器</th>
+			<th class="collection-as-table">类型</th>
+			<th class="collection-as-table">警报数量</th>
+			<th class="collection-as-table">源IP</th>
+			<th class="collection-as-table">宿IP</th>
+			<th class="collection-as-table">源端口</th>
+			<th class="collection-as-table">宿端口</th>
+			<th class="collection-as-table">攻击信息</th>
+			<th class="collection-as-table">详细信息</th>
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="Suricata">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td>	<input type="checkbox" name="evidenceSuricata" id="{$vo.EvidenceID}"/></td>
+              <td class="collection-as-table">{$vo['AnalyzerId']}</td>
+              <td class="collection-as-table"><?php echo get_evidence_type_name($vo['EvidenceType']);?></td>
+              <td class="collection-as-table">{$vo['RawCnt']}</td>
+             <td class="collection-as-table"><?php echo long2ip($vo['SIP'])?></td>
+             <td class="collection-as-table"><?php echo long2ip($vo['DIP'])?></td>
+             <td class="collection-as-table-break">{$vo['SPort']}</td>
+             <td class="collection-as-table-break">{$vo['DPort']}</td>
+             <td class="collection-as-table-break">{$vo['AlertMsg']}</td>
+              <td class="collection-as-table-break" ><a href="__URL__/download/CaseId/{$vo['CaseID']}/dname/{$vo['AttachFile']}/rname/{$vo['AttachFile']}">下载</a></td>
+              <td class="collection-as-table-break" >{$vo['TimeFirst']}</td>
+              <td class="collection-as-table-break" >{$vo['TimeLast']}</td>
+		</tr>
+		</volist>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td colspan="3" style="text-align:left;border-right:0px;">
+					<input type="checkbox" id="evidenceSuricataAll" onclick="allChangeCheckBox('evidenceSuricata','evidenceSuricataAll');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="evidenceOppo"  onclick="oppoChangeCheckBox('evidenceSuricata');"></input>反选&nbsp;&nbsp;
+					</td>
+					<?php if($pageFlag)
+					{
+					?>
+					<td colspan="9"><div style="text-align: center; ">{$page}</div></td>
+					<?php 
+}else
+{
+?>
+<td colspan="6" style="text-align:center;border-right:0px;"><a href="__ROOT__/DIM/index.php/Evidence/index/evidenceType/{$EvidenceType}/caseId/{$CaseId}" target="_blank">共{$SuricataTotalCount}条</a></td>
+					<td colspan="3" style="text-align:left;"></td>
+<?php 
+}
+					?>
+					
+					</tr>
+					
+	</tbody>
+</table>

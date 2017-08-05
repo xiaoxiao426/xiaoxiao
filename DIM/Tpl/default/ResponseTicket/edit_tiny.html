@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body style="background: #eaeaea;" >
+<div id="content">
+<div class="titlebox" style="border-right:rgb(204,204,204) 1px solid;">
+<div class="titlebox-title"><span class="left">编辑响应</span><span
+	class="right-empty"></span></div>
+
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" method="post" name="responseForm" onsubmit="return myCheckResponse(this)"
+	action="__URL__/update"> 	<input name="oldUploadIds" id="oldUploadIds" value="{$ids}"
+	type="hidden" />
+	<input name="newUploadIds" id="newUploadIds" value="" type="hidden" />
+	<input name="id" id="id" value="{$vo.id}" type="hidden" />
+<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>				
+		<tr>
+			<td class="label" style="min-width:60px;"><b>响应人:</b></td>
+			<td class="value"><input class="required" name="Responser" size="40"
+				value="{$vo.Responser}" /></td>
+		</tr>
+		<tr>
+			<td class="label" style="min-width:60px;"><b>响应时间:</b></td>
+			<td class="value"><input class="readonly required" name="ResponseTime"
+						value="{$vo.ResponseTime}" size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" />
+			</td>
+		</tr>
+		<tr>
+			<td class="labeltop" style="min-width:60px;"><b>消息:</b></td>
+			<td colspan="2"><textarea id="ResponseContent" cols="65" rows="15"
+				name="ResponseContent">{$vo.ResponseContent}</textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div class="submit" style="text-align: center;">
+			<div class="extra-buttons"></div>
+			<div class="buttons"><span class="caption"></span><input
+				class="button" name="create" value="保存" type="submit" /></div>
+			<div class="submit-clear"></div>
+			</div>
+			</td>
+		</tr>
+
+	</tbody>
+</table>
+<hr class="clear" />
+<hr class="clear" />
+<hr class="clear" />
+</form>
+<form id="upload" method="post" action="__URL__/upload/"  enctype="multipart/form-data" target="iframeUpload">
+<input name="id" type="hidden" />
+<input type="hidden" name="ajax" value="1" />
+<input type="hidden" name="_uploadSavePath" value="<?php echo __ROOT__.'/Public/Uploads/';?>" />
+<input type="hidden" name="_uploadFileResult" value="result" />
+<input type="hidden" name="_uploadFormId" value="upload" />
+<input type="hidden" name="_uploadFileSize" value="-1" />
+<input type="hidden" name="_uploadResponse" value="uploadComplete" />
+<input type="hidden" name="_uploadFileVerify" value="{$verify}" />
+	<div id="titlebox" class="titlebox-content" style="padding-top:0px;margin-top:-10px;">
+<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr class="edit-custom-field">
+					<td class="label"><B>附加档案:</B></td>
+					<td class="value" colSpan="2"> <iframe name="iframeUpload" src="" width="350" height="35" frameborder=0  scrolling="no" style="display:none;" ></iframe>
+            <input type="file"	name="file" /> <input type="submit" value="添加" /></td>
+				</tr>
+				<tr class="edit-custom-field">
+		<td class="label"><B>档案列表:</B></td>
+		<td class="value" colSpan="2"><div id="myAttachList">
+		<volist id="vo" name="attachList">
+		<div id="attach_{$vo['id']}"><a href="__URL__/download/dname/{$vo['SaveName']}/rname/{$vo['FileName']}">{$vo['FileName']}</a>
+		<img src="__PUBLIC__/Images/del.gif" width="20" height="20"  
+		onclick="delAttach({$vo['id']});" border="0" alt="删除附件"  
+		style="cursor:hand;" align="absmiddle"></img>
+		</div>
+		</volist>
+		</div></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</form>
+
+</div>
+</div>
+
+</div>
+<!-- end of 待处理事件-->
+</body>
+</html>

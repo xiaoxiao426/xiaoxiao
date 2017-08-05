@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function delAttach(id)
+{
+	
+	$("#div"+id).remove();
+}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<div class="titlebox">
+<div class="titlebox-title"><span class="left">发送响应策略</span><span
+	class="right-empty"></span></div>
+
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" method="post"
+	action="__URL__/StraInsert">
+	<?php $fileName = $case['CaseID'].".xls"; 
+			$code = urlencode($fileName);
+	?>
+	<input name="CaseId" id="CaseId" value="{$case.CaseID}" type="hidden" />
+	<input name="cid" id="cid" type="hidden" value="{$case.id}"></input>
+	<input name="docids" id="docids" type="hidden" value="{docids}"></input>
+	<input name="attach1" type="hidden" value="{$code}"/>
+	<input name="Type" type="hidden" value="Report" />
+	<input name="sid" type="hidden" value="<?php echo $_REQUEST['sid']; ?>" />
+ <table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr>
+			<td class="label"><b>事件:</b></td>
+			<td class="value"><a target="_blank"
+				href="__ROOT__/DIM/index.php/Incident/details/cid/{$case.CaseID}">{$case.CaseID}</a></td>
+		</tr>
+		<tr>
+			<td class="label"><b>单位:</b></td>
+			<td class="value">{$case.Unit}</td>
+		</tr>
+		<tr>
+			<td class="label"><b>邮件主题:</b></td>
+			<td class="value" colspan="2"><input name="Subject" size="60"
+				maxsize="100" value="安全通告" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>收件人:</b></td>
+			<td class="value"><input type="text" name="ReceiverAddress" value="{$case.Email}" readonly="readonly"></input></td>
+		</tr>
+		<tr>
+			<td class="label"><b>抄送:</b></td>
+			<td class="value"><input name="Cc" size="40" value="" /></td>
+		</tr>
+		<tr class="edit-custom-field">
+		<td class="label"><B>附加档案:</B></td>
+			<td class="value">
+			<div id="div9999"> 
+			<a href="__URL__/download/dname/{$code}/rname/{$code}/path/Report" >1.案件详情.xls</a>
+			<IMG SRC="__PUBLIC__/Images/del.gif" WIDTH="20" HEIGHT="20"  onclick="delAttach(9999);" BORDER="0" ALT="删除附件"  style="cursor:hand;" align="absmiddle" />
+			</div>
+			<?php 
+			for($i=0;$i<count($resdoc);$i++)
+{
+$id = $resdoc[$i]['id'];
+$rname = urlencode($resdoc[$i]['SaveName']);
+$dname = urlencode($resdoc[$i]['FileName']);
+echo "<div id=\"div".$id."\" ><a id=\"FileA".$id."\" href=\"__URL__/download/dname/".$rname."/rname/".$rname."\" >".($i+2).".".$resdoc[$i]["FileName"]."</a>";
+echo "<input name=\"FileName[]\" type=\"hidden\" value=\"".$dname."\" />";
+echo "<input name=\"SaveName[]\" type=\"hidden\" value=\"".$rname."\" />";
+echo "<IMG SRC=\"__PUBLIC__/Images/del.gif\" WIDTH=\"20\" HEIGHT=\"20\"  onclick=\"delAttach(".$id.");\" BORDER=\"0\" ALT=\"删除附件\"  style=\"cursor:hand;\" align=\"absmiddle\" /></div>";
+
+}
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td class="labeltop"><b>邮件正文:</b></td>
+			<td colspan="2"><textarea id="Content" cols="72" rows="15"
+				name="Content">{$resdoc[0].Content}<?php echo date("\nY-m-d");?></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div class="submit" style="text-align: center;">
+			<div class="extra-buttons"></div>
+			<div class="buttons"><span class="caption"></span><input
+				class="button" name="create" value="发送" type="submit" />
+				</div>
+			<div class="submit-clear"></div>
+			</div>
+			</td>
+		</tr>
+
+	</tbody>
+</table>
+<hr class="clear" />
+</form>
+</div>
+</div>
+
+</div>
+<!-- end of 待处理事件-->
+<include file="Public:footer" />
+</div>
+</body>
+</html>

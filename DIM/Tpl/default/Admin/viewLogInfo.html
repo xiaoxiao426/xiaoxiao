@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+	<script>
+	function showInput(id)
+	{
+		var notes = document.getElementById('notes').value;
+		$.post("__URL__/updateErrorLog/id/"+id+"/notes/"+notes, {
+		}, function(data) {
+		if(data.data==null){
+			alert("保存失败!");
+		   return;
+		 }else if(data.status==1){
+		     data=data.data;
+		     alert("保存成功!");
+		    }		    	     	 
+},"json");	
+	}
+	</script>
+<style>
+.label
+{
+width:50%;
+}
+ .value
+ {
+ width:50%;
+ }
+</style>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<!-- operation config -->
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>故障日志</a></span></div>
+<div class="titlebox-content ">
+<table class="ticket-summary" border="0" cellspacing="0" cellpadding="1" width="100%" >
+	<tbody>
+	    <tr><td class="label">故障编号：</td><td class="value">{$vo["id"]}</td></tr>
+		<tr><td class="label">故障码：</td><td class="value">{$vo["code"]}</td></tr>
+		<tr><td class="label">故障等级：</td><td class="value">{$vo["level"]}</td></tr>
+		<tr><td class="label">故障描述：</td><td class="value">{$vo["description"]}</td></tr>
+		<tr><td class="label">故障发生时间：</td><td class="value">{$vo["starttime"]}</td></tr>
+		<tr><td class="label">故障结束时间：</td><td class="value">{$vo["stoptime"]}</td></tr>
+		<tr><td class="label">故障检测次数：</td><td class="value">{$vo["occurnum"]}</td></tr>
+		<tr><td class="label">警报发送方式：</td><td class="value">{$vo["alerttype"]}</td></tr>
+		<?php if($vo['order']){
+			$output = "<tr><td class=\"label\">故障处理方案：</td><td class=\"value\">".$vo['allSolution']."</td></tr>
+		<tr><td class=\"label\">处理结果：</td><td class=\"value\">".$vo['handleresult']."</td></tr>
+		<tr><td class=\"label\">备注：</td><td class=\"value\"><input type='text' name='notes' id='notes' value='".$vo['notes']."'/><button onclick='showInput(".$vo['id'].");'>保存</button></td></tr>";
+		}else
+		{
+			$output = "<tr><td class=\"label\">备注：</td><td class=\"value\"><input type='text' name='notes' id='notes' value='".$vo['notes']."'/><button onclick='showInput(".$vo['id'].");'>保存</button></td></tr>
+		<tr><td colspan=\"2\" style=\"text-align:center;\">".$vo['extraTitle']."</td></tr>		
+		";
+		}
+echo $output;
+		?>
+		
+		
+	</tbody>
+</table>
+</div>
+</div>
+<!-- end of operation config -->
+
+</div>
+<include file="Public:footer" /></div>
+</body>
+</html>

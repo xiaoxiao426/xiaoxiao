@@ -1,0 +1,8 @@
+11:03:36  INFO [main] (WeaselMergeCase:main) - QD0-2013000033 QD0-2013000034 0
+11:03:36  INFO [main] (WeaselMergeCase:initParam) - jdbc:mysql://127.0.0.1:3306/CHAIRS_NEW?user=root&password=chairs123456&useUnicode=true&characterEncoding=utf-8
+11:03:36  INFO [main] (WeaselMergeCase:mergeCase) - -1 -1
+11:03:37  INFO [main] (WeaselMergeCase:mergeCase) - -1 -1
+11:03:37  INFO [main] (WeaselMergeCase:updateThreatEntityLib) - DELETE FROM ThreatSrcASN where EntityID=-1 and ASN IN (SELECT E FROM (SELECT ASN AS E from ThreatSrcASN where EntityID=-1) AS C);
+11:03:37  INFO [main] (WeaselMergeCase:updateThreatEntityLib) - DELETE FROM ThreatSrcCountry where EntityID=-1 and Country IN (SELECT E FROM (SELECT Country AS E from ThreatSrcCountry where EntityID=-1) AS C);
+11:03:37  INFO [main] (WeaselMergeCase:updateThreatEntityLib) - DELETE FROM ThreatSrcISP where EntityID=-1 and ISP IN (SELECT E FROM (SELECT ISP AS E from ThreatSrcISP where EntityID=-1) AS C);
+11:03:37  INFO [main] (WeaselMergeCase:updateThreatEntityLib) - DELETE FROM ThreatSrcOrg where EntityID=-1 and Org IN (SELECT E FROM (SELECT Org AS E from ThreatSrcOrg where EntityID=-1) AS C);

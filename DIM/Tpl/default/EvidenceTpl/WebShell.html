@@ -1,0 +1,52 @@
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="evenline">
+			<th class="collection-as-table"><input type="checkbox"
+				id="evidenceWebShellTitle"	onclick="allChangeCheckBox('evidenceWebShell','evidenceWebShellTitle');" /></th>
+			<th class="collection-as-table">分析器</th>
+			<th class="collection-as-table">主机地址</th>
+			<th class="collection-as-table">主机域名</th>
+			<th class="collection-as-table">链接</th>
+			<th class="collection-as-table">密码</th>
+			<th class="collection-as-table">访问次数</th>	
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;?>
+
+		<volist id="vo" name="WebShell">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td>	<input type="checkbox" name="evidenceWebShell" id="{$vo.EvidenceID}"/></td>
+              <td class="collection-as-table">{$vo['AnalyzerId']}</td>             
+             <td class="collection-as-table-break"><?php echo long2ip($vo['HostIP']); ?></td>
+             <td class="collection-as-table-break">{$vo['HostName']}</td>
+             <td class="collection-as-table-break">{$vo['WebshellUrl']}</td>
+             <td class="collection-as-table-break">{$vo['Passwd']}</td>
+             <td class="collection-as-table-break">{$vo['ConnNum']}</td>
+              <td class="collection-as-table-break" >{$vo['TimeFirst']}</td>
+              <td class="collection-as-table-break" >{$vo['TimeLast']}</td>
+		</tr>
+		</volist>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td colspan="3" style="text-align:left;">
+					<input type="checkbox" id="evidenceWebShellAll" onclick="allChangeCheckBox('evidenceWebShell','evidenceWebShellAll');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="evidenceOppo"  onclick="oppoChangeCheckBox('evidenceWebShell');"></input>反选&nbsp;&nbsp;
+					</td><?php if($pageFlag)
+					{
+					?>
+					<td colspan="9"><div style="text-align: center; ">{$page}</div></td>
+					<?php 
+}else
+{
+?>
+<td colspan="6" style="text-align:center;border-right:0px;"><a href="__ROOT__/DIM/index.php/Evidence/index/evidenceType/{$EvidenceType}/caseId/{$CaseId}" target="_blank">共{$WebShellTotalCount}条</a></td>
+<td colspan="3" style="text-align:left;"></td>
+<?php 
+}
+					?></tr>
+	</tbody>
+</table>

@@ -1,0 +1,59 @@
+<!-- 
+按单位划分TID等
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<style>
+.myIframe
+{
+width:100%;
+frameborder:no;
+border:0;
+marginwidth:0;
+marginheight:0; 
+scrolling:no;
+}
+</style>
+<script language="javascript" type="text/javascript"> 
+function dyniframesize(pTar) { 
+	if (pTar && !window.opera){ 
+	//begin resizing iframe 
+	pTar.style.display="block" 
+	if (pTar.contentDocument && pTar.contentDocument.body.offsetHeight){ 
+	//ns6 syntax 
+	pTar.height = pTar.contentDocument.body.offsetHeight +20; 
+	//pTar.width = pTar.contentDocument.body.scrollWidth+20; 
+	} 
+	else if (pTar.Document && pTar.Document.body.scrollHeight){ 
+	pTar.height = pTar.Document.body.scrollHeight+20; 
+	} 
+	} 
+} 
+</script> 
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();" >
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 35px;"></div>
+
+<div id="content" style="min-height: 600px;"><?php 
+if(count($tids)==0) echo "暂无";
+else {
+for($i=0;$i<count($tids);$i++)
+{
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);" id="if1"
+src="__ROOT__/DIM/index.php/ThreatTpl/UnitTID/gid/{$gid}/tid/{$tids[$i]['TID']}"  ></iframe>
+
+<?php
+}
+}
+?> 
+</div>
+<include file="Public:footer" /></div>
+
+</body>
+</html>

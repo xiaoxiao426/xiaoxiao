@@ -1,0 +1,67 @@
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="evenline">
+			<th class="collection-as-table"><input type="checkbox"
+				id="NbosUahPortTitle"	onclick="allChangeCheckBox('NbosUahPort','NbosUahPortTitle');" /></th>
+			<th class="collection-as-table-break">分析器</th>
+			<th class="collection-as-table-break">源端口</th>
+			<th class="collection-as-table-break">威胁宿IP</th>
+			<th class="collection-as-table-break">威胁宿IP归属描述</th>
+			<th class="collection-as-table-break">宿端口</th>	
+			<th class="collection-as-table-break" >检测到活跃次数</th>			
+			<th class="collection-as-table-break">检测到活跃时间(秒)</th>
+			<th class="collection-as-table-break">流数</th>
+			<th class="collection-as-table-break">吞吐量(bytes)</th>
+			<th class="collection-as-table-break">吞吐量(pkts)</th>
+		<!--  	<th class="collection-as-table-break">带宽(bps)</th>
+			<th class="collection-as-table-break">带宽(pps)</th> -->
+			<th class="collection-as-table-break">开始时间</th>
+			<th class="collection-as-table-break">最后活动</th>
+			<th class="collection-as-table">详细信息</th>
+		</tr>
+		<?php $myCount = 0;?>
+		
+		<volist id="vo" name="NbosUahPort">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td>	<input type="checkbox" name="NbosUahPort" id="{$vo.EvidenceID}"/></td>
+               <td class="collection-as-table">{$vo['AnalyzerId']}</td>
+              <td class="collection-as-table"><?php if($vo['ThreatSrcPort'] == -1) echo '*'; else echo $vo['ThreatSrcPort'];?></td>
+               <td class="collection-as-table"><?php echo long2ip($vo['ThreatDstIP'])?></td>
+                <td class="collection-as-table-break">{$vo['ThreatDstIPInfo']}</td>
+                <td class="collection-as-table">{$vo['ThreatDstPort']}</td>     
+                <td class="collection-as-table" style="width: 50px;">{$vo['OccurNum']}</td>    
+                 <td class="collection-as-table-break" style="width: 50px;">{$vo['TimeLive']}</td>  
+             <td class="collection-as-table-break">{$vo['FlowNum']}</td>
+             <td class="collection-as-table-break">{$vo['TotalInBytes']}/{$vo['TotalOutBytes']}</td>
+                <td class="collection-as-table-break" >{$vo['TotalInPkts']}/{$vo['TotalOutPkts']}</td>
+             <!--    <td class="collection-as-table-break" >{$vo['MaxInbps']}/{$vo['MinInbps']}/{$vo['MaxOutbps']}/{$vo['MinOutbps']}</td>
+              <td class="collection-as-table-break" >{$vo['MaxInpps']}/{$vo['MinInpps']}/{$vo['MaxOutpps']}/{$vo['MinOutpps']}</td> -->
+               <td class="collection-as-table-break">{$vo['TimeStart']}</td>
+             <td class="collection-as-table-break">{$vo['TimeLast']}</td>
+             <td class="collection-as-table-break"><a href="__URL__/download/CaseId/{$vo['CaseID']}/dname/{$vo['AttachFile']}/rname/{$vo['AttachFile']}">下载</a></td>
+           
+		</tr>
+		</volist>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td colspan="3" style="text-align:left;">
+					<input type="checkbox" id="NbosUahPortAll" onclick="allChangeCheckBox('NbosUahPort','NbosUahPortAll');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="evidenceOppo"  onclick="oppoChangeCheckBox('NbosUahPort');"></input>反选&nbsp;&nbsp;
+					</td><?php if($pageFlag)
+					{
+					?>
+					<td colspan="12"><div style="text-align: center; ">{$page}</div></td>
+					<?php 
+}else
+{
+?>
+<td colspan="9" style="text-align:center;border-right:0px;"><a href="__ROOT__/DIM/index.php/Evidence/index/evidenceType/{$EvidenceType}/caseId/{$CaseId}" target="_blank">共{$NbosUahPortTotalCount}条</a></td>
+<td colspan="3" style="text-align:left;"></td>
+<?php 
+}
+					?></tr>
+	</tbody>
+</table>

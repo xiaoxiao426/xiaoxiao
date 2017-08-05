@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function checkIP_zzjs()
+{
+	obj=document.getElementById("IP").value;
+	var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	var reg = obj.match(exp);
+	if(reg==null)
+	{
+	alert("IP地址不合法！");
+	return false;
+	}
+	else
+	{
+	return true;
+	}
+}
+
+
+function checkFindIP()
+{
+	obj=document.getElementById("IPF").value;
+	if(obj.length < 1) return true;
+	var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	var reg = obj.match(exp);
+	if(reg==null)
+	{
+	alert("IP地址不合法！");
+	return false;
+	}
+	else
+	{
+	return true;
+	}
+}
+
+
+
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<include file="Public:calendar" />
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>单位关注IP</a></span></div>
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" action="__URL__/insertConcern" >
+<table  border="0" cellspacing="0" cellpadding="0" style="margin-left:5%;"
+	width="90%">
+	<tbody>
+	<tr>
+	<td class="cflabel cftype-Freeform"><B>单位：</B></td>
+	<td><select name="Unit" id="Unit">
+	<option>--请选择--</option>
+	<volist id="unitList" name="unitList">
+	<option value="{$unitList.UnitName}">{$unitList.UnitName}</option>
+	</volist>
+	</td>
+	</select>
+	</tr>
+	<tr><td><hr></hr></td><td><hr></hr></td></tr>
+	<tr><td colspan=2>方式一：输入添加（多个IP以英文字符","隔开）</td>
+	</tr>
+	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>IP地址:</B>
+					</td>
+					<td class="entry cftype-Freeform"><input  name="IP" id="IP"
+						size="50" /></td>								
+				</tr>
+					
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>描述:</B><br />
+					</td>
+					<td class="entry cftype-Freeform" colspan="1"><textarea id="description" name="description" rows="3" cols="50"></textarea></td>
+					
+				</tr>
+		<tr>
+						<td colspan="2">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align:center;margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="提交" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+<tr><td><hr></hr></td><td><hr></hr></td></tr>
+	<tr><td colspan=2>方式二：txt文件上传导入（格式：每行一个IP，IP和描述以空格隔开）</td>	
+	</tr>
+	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>文件：</B></td><td class="entry cftype-Freeform"><input type='file' name='ipfile'></input></td></tr>
+				<tr>
+						<td colspan="2">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align:center;margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="上传" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+</table>
+</form>
+</div>
+</div>
+
+<div class="titlebox-content ">
+<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><form enctype="multipart/form-data" 
+id="form2" name="form2" method="post" action="__URL__/unitIP" ><label>IP地址:</label><input name="IPF" id="IPF" type="text" size="30"></input><input class="button" 
+							value="搜索" type="submit" onclick="return checkFindIP();"/></form></div>
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">IP</th>
+			<th class="collection-as-table">所属单位</th>	
+			<th class="collection-as-table">描述</th>
+			<th class="collection-as-table">操作</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="list">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+              <td class="collection-as-table-break"><?php echo long2ip($vo['IP']);?></td>
+              <td class="collection-as-table">{$vo.Unit}</td>   
+              <td class="collection-as-table">{$vo['Description']}</td>         
+              <td class="collection-as-table"><a href="__URL__/ipConEdit/id/{$vo.id}">修改</a>&nbsp;<a href="__URL__/conDelete/id/{$vo.id}">删除</a></td>         
+		</tr>
+		</volist>
+	</tbody>
+</table>
+<div style="text-align: center; margin-top: 5px;">{$page}</div>
+</div>
+</div>
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

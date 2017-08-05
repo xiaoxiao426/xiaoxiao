@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<style>
+.myIframe
+{
+width:100%;
+frameborder:no;
+border:0;
+marginwidth:0;
+marginheight:0; 
+scrolling:no;
+}
+</style>
+<script language="javascript" type="text/javascript"> 
+function dyniframesize(pTar) { 
+	if (pTar && !window.opera){ 
+	//begin resizing iframe 
+	pTar.style.display="block" 
+	if (pTar.contentDocument && pTar.contentDocument.body.offsetHeight){ 
+	//ns6 syntax 
+	pTar.height = pTar.contentDocument.body.offsetHeight +20; 
+	//pTar.width = pTar.contentDocument.body.scrollWidth+20; 
+	} 
+	else if (pTar.Document && pTar.Document.body.scrollHeight){ 
+	//ie5+ syntax 
+	pTar.height = pTar.Document.body.scrollHeight+20; 
+	//pTar.width = pTar.Document.body.scrollWidth; 
+	} 
+	} 
+} 
+
+if (document.addEventListener){ 
+	document.addEventListener('DOMContentLoaded', documentLoaded, false);} 
+	else{ 
+	window.attachEvent('onload', documentLoaded);
+	} 
+
+	function documentLoaded() 
+	{ 
+		var loader = document.getElementById("loading"); 
+		 if(loader)
+			 {
+			 loader.innerHTML      = "";    
+			    loader.style.display = "none";  
+			    _frame.style.visibility = "visible";   
+			 }
+		 else
+			 {
+			 alert("数据错误!");
+			 }
+	} 
+	
+function stateChangeIE(_frame)
+{ 
+	 if (_frame.readyState && _frame.readyState != 'complete') return; 
+	 else { 
+		 var loader = document.getElementById("loading"); 
+		 if(loader)
+			 {
+			 loader.innerHTML      = "";    
+			    loader.style.display = "none";  
+			    _frame.style.visibility = "visible";   
+			 }
+		 else
+			 {
+			 alert("数据错误!");
+			 }
+	 }
+	 
+ 
+}
+
+function stateChangeFirefox(_frame)
+{ 
+ var loader = document.getElementById("loading"); 
+ if(loader)
+	 {
+	 loader.innerHTML      = "";    
+	 alert(loader.innerHTML);
+	    loader.style.display = "none";  
+	    _frame.style.visibility = "visible";   
+	 }
+ else
+	 {
+	 alert("数据错误!");
+	 }
+    
+}
+</script> 
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();" >
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 35px;"></div>
+<div id="loading" style="display:block; padding:100px 0 100px 0;text-align:center;color:#999999;font-size:12px;">
+ <img src="__PUBLIC__/Images/loading_b.gif" width="100" height="100" alt="loading..." style="position:relative;top:11px;"/>
+</div>
+
+<div id="content" style="min-height: 600px;"><?php 
+$param="gid/$gid/tid/$tid";
+
+if($unit)
+{
+$param.="/unit/".urlencode($unit);
+}
+
+switch($tid)
+{
+case 300001:
+case 300002:
+case 300003:
+case 300004:
+case 300005:
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);" id="if1" onreadystatechange="stateChangeIE(this)" onload="stateChangeIE(this)"
+src="__APP__/ThreatTpl/DDoS/{$param}"></iframe>
+</div>
+<?php
+break;
+case 700003:
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);" id="if1" onreadystatechange="stateChangeIE(this)" onload="stateChangeIE(this)"
+src="__ROOT__/DIM/index.php/ThreatTpl/invasion/{$param}"  ></iframe>
+</div><?php
+break;
+case 700004: 
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);" id="if1" onreadystatechange="stateChangeIE(this)" onload="stateChangeIE(this)"
+src="__APP__/ThreatTpl/webshell/{$param}"></iframe>
+</div><?php
+break;
+case 700700:
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);"  onreadystatechange="stateChangeIE(this)" onload="stateChangeIE(this)"
+src="__ROOT__/DIM/index.php/ThreatTpl/NBOSUahPort/{$param}"></iframe>
+</div>
+<?php
+break;
+case 600002: //僵尸网络后门
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);" id="if1" onreadystatechange="stateChangeIE(this)" onload="stateChangeIE(this)"
+src="__APP__/ThreatTpl/botnetbd/{$param}"></iframe>
+</div>
+<?php
+break;
+case 600003: //僵尸网络后门
+?>
+<iframe class="myIframe" onload="javascript:dyniframesize(this);" id="if1" onreadystatechange="stateChangeIE(this)" onload="stateChangeIE(this)"
+src="__APP__/ThreatTpl/botnet/{$param}"></iframe>
+</div><?php
+break;
+default:
+break;
+}
+?> 
+<script language="javascript" type="text/javascript"> 
+
+</script>
+<include file="Public:footer" /></div>
+
+</body>
+</html>

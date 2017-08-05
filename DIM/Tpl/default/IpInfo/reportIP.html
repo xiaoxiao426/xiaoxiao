@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function checkIP_zzjs()
+{
+obj=document.getElementById("IP").value;
+var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+var reg = obj.match(exp);
+if(reg==null)
+{
+alert("IP地址不合法！");
+return false;
+}
+else
+{
+return true;
+}
+}
+
+
+function checkFindIP()
+{
+obj=document.getElementById("IPF").value;
+if(obj.length < 1) return true;
+var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+var reg = obj.match(exp);
+if(reg==null)
+{
+alert("IP地址不合法！");
+return false;
+}
+else
+{
+return true;
+}
+}
+
+
+
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<include file="Public:calendar" />
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>上报IP</a></span></div>
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" action="__URL__/insert" >
+<table  border="0" cellspacing="0" cellpadding="0" style="margin-left:5%;"
+	width="90%">
+	<tbody>
+	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>IP地址:</B><br />
+					</td>
+					<td class="entry cftype-Freeform"><input  name="IP" id="IP"
+						size="20" /></td>								
+				</tr>
+	<tr class="edit-custom-field">
+					<td class="label"><B>IP安全状态:</B></td>
+					<td>
+					<table width="100%">
+					<?php 
+for($i=0;$i<count($SafeSta);$i++)
+{
+if($i%3==0) echo "<tr style='min-width:300px;'>";
+echo "<td><input name='SafeSta[]' type='checkbox' value='".$SafeSta[$i]['id']."' />".$SafeSta[$i]['name']."</td>";
+if($i%3==2) echo "</tr>";
+}
+					?>
+					</table>
+					</td>
+					</tr>
+	<tr class="edit-custom-field">
+					<td class="label"><B>IP角色:</B></td>
+					<td>
+					<table width="100%">
+					<?php 
+for($i=0;$i<count($SafeRole);$i++)
+{
+if($i%3==0) echo "<tr style='min-width:300px;'>";
+echo "<td><input name='SafeRole[]' type='checkbox' value='".$SafeRole[$i]['id']."' />".$SafeRole[$i]['IPRole']."</td>";
+if($i%3==2) echo "</tr>";
+}
+					?>
+					</table>
+					</td>
+				</tr>	
+			<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>报告时间:</B><br />
+					</td>
+					<td class="entry cftype-Freeform"><input class="readonly" name="reportime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" /></td>
+					<td class="cflabel cftype-Select">
+					</td>
+					<td class="entry cftype-Select"></td>
+				</tr>
+				
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>描述:</B><br />
+					</td>
+					<td class="entry cftype-Freeform" colspan="3"><textarea id="description" name="description" rows="3" cols="50"></textarea></td>
+					
+				</tr>
+		
+				
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align:center;margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="上报" type="submit" onclick="return checkIP_zzjs();"/></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+</table>
+</form>
+</div>
+</div>
+
+<div class="titlebox-content ">
+<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><form enctype="multipart/form-data" 
+id="form2" name="form2" method="post" action="__URL__/reportIP" ><label>IP地址:</label><input name="IPF" id="IPF" type="text" size="30"></input><input class="button" 
+							value="搜索" type="submit" onclick="return checkFindIP();"/></form></div>
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">IP</th>
+			<th class="collection-as-table">安全状态</th>	
+			<th class="collection-as-table">IP角色</th>	
+			<th class="collection-as-table">上报日期</th>			
+			<th class="collection-as-table">描述</th>
+			<th class="collection-as-table">操作</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="list">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+              <td class="collection-as-table-break"><?php echo long2ip($vo['IP']);?></td>
+              <td class="collection-as-table">{$vo.sate}</td>   
+               <td class="collection-as-table">{$vo.role}</td>           
+              <td class="collection-as-table-break">{$vo['reportime']}</td>
+              <td class="collection-as-table">{$vo['description']}</td>         
+              <td class="collection-as-table"><a href="__URL__/ipedit/id/{$vo.id}">修改</a>&nbsp;<a href="__URL__/delete/id/{$vo.id}">删除</a></td>         
+		</tr>
+		</volist>
+	</tbody>
+</table>
+<div style="text-align: center; margin-top: 5px;">{$page}</div>
+</div>
+</div>
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

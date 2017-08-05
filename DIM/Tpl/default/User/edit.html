@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<style>
+.readonly
+ { background-color:#F6F6F6;}
+</style>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+		<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics">
+			<div class="titlebox-title"><span class="left">修改个人信息
+			#{$vo.id}</span><span class="right-empty"></span></div>
+			<form enctype="multipart/form-data" method="post"
+	action="__URL__/update"><input name="id" value="40"
+	type="hidden" />
+	<input name="id" name="id" value="{$vo.id}" type="hidden"/>
+			<div id="titlebox" class="titlebox-content ">
+			<table width="100%">
+				<tr class="edit-custom-field">
+					<td class="label"><B>用户名:</B></td>
+					<td>{$vo.name}</td>
+				
+					<td class="label"><B>用户权限:</B></td>
+					<td class="value">
+					
+					 <?php if($vo['power'] == 1) echo "普通用户"; else echo "组长";?>
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>真实姓名:</B></td>
+					<td><label>{$vo.realName}</label></td>
+				
+					<td class="label"><B>邮箱:</B></td>
+					<td class="value">
+					<input name="emailAddress" value="{$vo.emailAddress}" class="required" size="24"></input></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>所在组织:</B></td>
+					<td><label>{$vo.organization}</label></td>
+				
+					<td class="label"><B>家庭电话:</B></td>
+					<td class="value">
+					<input name="homePhone" value="{$vo.homePhone}"></input></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>工作电话:</B></td>
+					<td><label>{$vo.workPhone}</label></td>
+				
+					<td class="label"><B>移动电话:</B></td>
+					<td class="value">
+					<input name="mobilePhone" value="{$vo.mobilePhone}"></input></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>所在省:</B></td>
+					<td><label>{$vo.province}</label>
+					</td>
+				
+					<td class="label"><B>所在城市:</B></td>
+					<td class="value"><label>{$vo.city}</label>
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>地址:</B></td>
+					<td><label>{$vo.address}</label></td>
+				
+					<td class="label"><B>邮编:</B></td>
+					<td class="value"><label>{$vo.zip}</label>
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="labeltop"><B>备注:</B></td>
+					<td colSpan="3"><label>{$vo.comment}</label></td>
+				</tr>
+				
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align: center; margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="保存更改" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+			</table>
+			<hr class="clear" />
+			</div>
+			</form>			
+			</div>
+			</div>
+
+
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

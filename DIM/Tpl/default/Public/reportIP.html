@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<include file="Public:calendar" />
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>上报IP</a></span></div>
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post"  >
+<table  border="0" cellspacing="0" cellpadding="0" style="margin-left:20%;"
+	width="60%">
+	<tbody>
+	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>IP地址:</B><br />
+					</td>
+					<td class="entry cftype-Freeform"><input  name="StartTime"
+						size="20" /></td>								
+				</tr>
+	<tr class="edit-custom-field">
+					<td class="label"><B>IP安全状态:</B></td>
+					<td>
+					<select name="safeStatue">
+					<option value="4">僵尸网络控制器</option>
+					<option value="5">僵尸网络成员</option>
+					<option value="6">攻击跳板</option>
+					<option value="7">钓鱼网站</option>
+					<option value="8">非法服务</option>
+					<option value="9">恶意代码传播</option>
+					<option value="10">垃圾邮件</option>
+					<option value="11">扫描</option>
+					</select>
+					</td>
+					</tr>
+	<tr class="edit-custom-field">
+					<td class="label"><B>IP角色:</B></td>
+					<td><select name="iprole">
+					<option value="1001">网页服务器</option>
+					<option value="1002">邮件服务器</option>
+					<option value="1003">FTP服务器</option>
+					<option value="1004">域名服务器</option>
+					<option value="1005">交互服务器</option>
+					<option value="1006">多媒体服务器</option>
+					<option value="1007">游戏服务器</option>
+					<option value="1008">代理服务器</option>			
+					<option value="1009">其他类型</option>			
+					</select></td>
+				</tr>	
+			<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>报告时间:</B><br />
+					</td>
+					<td class="entry cftype-Freeform"><input class="readonly" name="StartTime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" /></td>
+					<td class="cflabel cftype-Select">
+					</td>
+					<td class="entry cftype-Select"></td>
+				</tr>
+		
+				
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align:left;margin-left:30%;margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="上报" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+</table>
+</form>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

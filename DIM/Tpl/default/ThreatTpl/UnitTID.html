@@ -1,0 +1,61 @@
+ <!-- 单位及TID -->
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/Js/jquery.js" type="text/javascript"></script>
+<script>
+ function submitForm(order,sort)
+ {
+	 $("#_order").val(order);
+	 $("#_sort").val(sort);	
+	 $("#submit_form").submit();
+ }
+</script>
+</head>
+<body STYLE='OVERFLOW:SCROLL;OVERFLOW-Y:HIDDEN;OVERFLOW-X:HIDDEN'>
+ <div class="titlebox" id="invasionTitle">
+      <div class="titlebox-title"><span class="widget"><a title="toggle visibility" onclick="rollup('invasion');"></a></span><span 
+      class="left"><a target="_blank"><?php echo get_threat_group_name($gid,$tid); if($gid==4) echo "归属统计";?></a></span></div>
+      <div   class="titlebox-content" id="invasionContent">
+      <form id="submit_form" name="submit_form">
+      <input type="hidden" name="_order" id="_order" value="{$order}"></input>
+      <input type="hidden" name="_sort" id="_sort" value="{$sort}"></input>
+      <input type="hidden" name="p" value="1"></input>
+      </form>
+        <table class="ticket-list" width="100%" style="font-size: 0.9em;overflow:hidden;">
+        
+          <tbody>
+            <tr class="collection-as-table">
+              <th <?php if($order == 'Unit') {echo "onclick='submitForm(\"Unit\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"Unit\",\"1\")'"; ?>>组织</th>
+              <th <?php if($order == 'Cnt') {echo "onclick='submitForm(\"Cnt\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"Cnt\",\"1\")'"; ?>>主机数</th>
+              <th <?php if($order == 'FirstTime') {echo "onclick='submitForm(\"FirstTime\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"FirstTime\",\"1\")'"; ?>>首次检测时间</th>
+              <th <?php if($order == 'LastTime') {echo "onclick='submitForm(\"LastTime\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"LastTime\",\"1\")'"; ?>>最后活跃时间</th>
+            </tr>
+            <?php $myCount = 0; ?>
+         <volist id="vo" name="list">
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo "class='evenline'";?> >
+		<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/Threat/index/gid/{$gid}/tid/{$tid}/unit/<?php echo urlencode($vo['Unit']);?>" target="_blank">{$vo['Unit']}</a></td>
+              <td class="collection-as-table-break">{$vo['Cnt']}</td>
+              <td class="collection-as-table-break">{$vo['FirstTime']}</td>
+              <td class="collection-as-table-break">{$vo['LastTime']}</td>
+		</tr>
+		</volist>
+          </tbody>
+        </table>
+        <?php if($limitFlag){
+ ?>
+<div style="text-align:center;margin-top:5px;"><a href="__APP__/Threat/UnitTIDSum/gid/$gid">共{$total}条</a></div>
+<?php
+}
+else
+{
+?>
+<div style="text-align:center;margin-top:5px;">{$page}</div>
+<?php
+}
+?>
+      </div>
+    </div> 
+    </body>
+    </html>

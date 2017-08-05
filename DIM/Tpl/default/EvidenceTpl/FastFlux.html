@@ -1,0 +1,58 @@
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="evenline">
+			<th class="collection-as-table"><input type="checkbox"
+				id="evidenceFastFluxTitle"	onclick="allChangeCheckBox('evidenceFastFlux','evidenceFastFluxTitle');" /></th>
+			<th class="collection-as-table">分析器</th>
+			<th class="collection-as-table">类型</th>
+			<th class="collection-as-table">IP数</th>
+			<th class="collection-as-table">最小TTL</th>
+			<th class="collection-as-table">最大TTL</th>
+			<th class="collection-as-table">ASN数</th>
+			<th class="collection-as-table">国家数</th>
+			<th class="collection-as-table">子网数</th>
+			<th class="collection-as-table">详细信息</th>
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;?>
+
+		<volist id="vo" name="FastFlux">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td>	<input type="checkbox" name="evidenceFastFlux" id="{$vo.EvidenceID}"/></td>
+              <td class="collection-as-table">{$vo['AnalyzerId']}</td>
+              <td class="collection-as-table"><?php echo get_evidence_type_name($vo['EvidenceType']);?></td>
+             <td class="collection-as-table-break">{$vo['IPNum']}</td>
+             <td class="collection-as-table-break">{$vo['TTLMin']}</td>
+             <td class="collection-as-table-break">{$vo['TTLMax']}</td>
+             <td class="collection-as-table-break">{$vo['ASNNum']}</td>
+             <td class="collection-as-table-break">{$vo['CountryNum']}</td>
+             <td class="collection-as-table-break">{$vo['SubnetNum']}</td>
+             <td class="collection-as-table-break"><a href="__URL__/download/CaseId/{$vo['CaseID']}/dname/{$vo['AttachFile']}/rname/{$vo['AttachFile']}">下载</a></td>            
+              <td class="collection-as-table-break" >{$vo['TimeFirst']}</td>
+              <td class="collection-as-table-break" >{$vo['TimeLast']}</td>
+		</tr>
+		</volist>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td colspan="3" style="text-align:left;">
+					<input type="checkbox" id="evidenceFastFluxAll" onclick="allChangeCheckBox('evidenceFastFlux','evidenceFastFluxAll');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="evidenceOppo"  onclick="oppoChangeCheckBox('evidenceFastFlux');"></input>反选&nbsp;&nbsp;
+					</td><?php if($pageFlag)
+					{
+					?>
+					<td colspan="9"><div style="text-align: center; ">{$page}</div></td>
+					<?php 
+}else
+{
+?>
+<td colspan="6" style="text-align:center;border-right:0px;"><a href="__ROOT__/DIM/index.php/Evidence/index/evidenceType/{$EvidenceType}/caseId/{$CaseId}" target="_blank">共{$FastFluxTotalCount}条</a></td>
+<td colspan="3" style="text-align:left;"></td>
+<?php 
+}
+					?></tr>
+	</tbody>
+</table>

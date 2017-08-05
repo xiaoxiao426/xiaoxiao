@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>统计结果</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center">
+<include file="Public:topA" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics ">
+			<div class="titlebox-title"><span class="left">统计结果
+			</span><span class="right-empty"></span></div>
+			<div id="titlebox" class="titlebox-content ">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+			<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">开始时间</th>
+			<th class="collection-as-table">结束时间</th>	
+			<th class="collection-as-table-break">采集总计时间</th>	
+			<th class="collection-as-table-break">成功采集URL数</th>			
+			<th class="collection-as-table-break">未成功采集URL数</th>
+			<th class="collection-as-table-break">成功采集文件数</th>
+			<th class="collection-as-table-break">采集数据总量</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="list">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td class="collection-as-table">{$vo['BeginTime']}</td>
+              <td class="collection-as-table">{$vo['EndTime']}</td>
+              <td class="collection-as-table">{$vo['TotalTime']}</td>   
+               <td class="collection-as-table">{$vo['URLNum']}</td>           
+              <td class="collection-as-table">{$vo['UURLNum']}</td>
+              <td class="collection-as-table">{$vo['FileNum']}</td>
+              <td class="collection-as-table">{$vo['Data']}</td>
+		</tr>
+		</volist>
+	</tbody>
+			
+			</table>
+			<div style="text-align: center; margin-top: 5px;">{$page}</div>
+			<hr class="clear" />
+			</div>
+			</div>
+
+</div>
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" />
+</div>
+</body>
+</html>

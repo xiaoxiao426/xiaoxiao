@@ -1,0 +1,98 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Css/top.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Css/webdim.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Css/menu.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Css/dim.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/Js/jquery.js" type="text/javascript"></script>
+<style>
+.center {
+	width: 960px;
+	border: 1px solid #D1DEF1;
+	margin: 0px auto;
+	background-color: #d4e6f6;
+}
+.menu ul li a,.menu ul li a:visited
+{
+	width: 134px;
+}
+</style>
+<script language="JavaScript">
+	var timerID = null;
+	var timerRunning = false;
+	function stopclock() {
+		if (timerRunning)
+			clearTimeout(timerID);
+		timerRunning = false;
+	}
+	function startclock() {
+		stopclock();
+		showtime();
+	}
+	function showtime() {
+		var now = new Date();
+		var hours = now.getHours();
+		var minutes = now.getMinutes();
+		var seconds = now.getSeconds()
+		var timeValue = now.getFullYear() + "-" + (now.getMonth() + 1) + "-"
+				+ now.getDate() + " "
+		timeValue += hours
+		timeValue += ((minutes < 10) ? ":0" : ":") + minutes
+		timeValue += ((seconds < 10) ? ":0" : ":") + seconds
+		document.getElementById("nowTime").innerHTML = timeValue;
+		timerID = setTimeout("showtime()", 1000);
+		timerRunning = true;
+	}
+</script>
+<title>DIM</title>
+</head>
+<div id="header" style="z-index:20000;">
+<div id="navRight" style="float: right; padding-right: 15px; font-style: italic"><span
+	id="nowTime"></span> &nbsp;|&nbsp;<?php echo $_SESSION['loginUserName'];?>&nbsp;|&nbsp;<a href="__ROOT__/DIM/index.php/Public/logout/" class="topA">注销</a>
+	</div>
+<div class="logo" style="width: 180px;"><img
+	src="__PUBLIC__/Css/logo_l.png" alt="" hspace="27" border="0" /></div>
+<div><img src="__PUBLIC__/Css/logo_c.png" alt="" hspace="27" style="margin-left:80px;" 
+	border="0" /></div>
+
+
+<div id="menu" class="menu" style="z-index:20000;">
+
+<ul>
+	<li ><a <?php if($_SESSION['currpage']==4) echo 'class="current"'; else echo 'class="hide"';?> href="__ROOT__/DIM/index.php/Index/index">首页</a>
+	</li>
+	 
+	<li ><a <?php if($_SESSION['currpage']==5) echo 'class="current"'; else echo 'class="hide"';?> href="__ROOT__/DIM/index.php/Admin/errorReport">故障报告</a></li>
+	<!--    <ul>
+    <li><a href="../menu/zero_dollars.html" title="The zero dollar ads page">zero dollars</a></li>
+    <li><a href="../menu/embed.html" title="Wrapping text around images">wrapping text</a></li>
+    <li><a href="../menu/form.html" title="Styling forms">styled form</a></li>
+    <li><a href="../menu/nodots.html" title="Removing active/focus borders">active focus</a></li>
+    </ul>--></li>
+	<li ><a <?php if($_SESSION['currpage']==2) echo 'class="current"'; else echo 'class="hide"';?> >用户管理</a>
+	 <ul>
+    <li ><a target="_blank" href="__ROOT__/DIM/index.php/User/localUser" title="本地用户">本地用户</a></li>
+    <li ><a target="_blank" href="__ROOT__/DIM/index.php/User/joint" title="协同用户">协同用户</a></li>
+    </ul>
+	</li>
+	<li ><a <?php if($_SESSION['currpage']==1) echo 'class="current"'; else echo 'class="hide"';?> style="border-left: 2px solid #D1DEF1;" href="__ROOT__/DIM/index.php/Admin/performanceReport">性能报告</a>
+	</li>
+	<li ><a <?php if($_SESSION['currpage']==6) echo 'class="current"'; else echo 'class="hide"';?> style="border-left: 2px solid #D1DEF1;">网页采集管理</a>
+	<ul>
+    <li ><a href="__ROOT__/DIM/index.php/Admin/malWebUrl" title="采集配置">采集配置</a></li>
+    <li ><a href="__ROOT__/DIM/index.php/Admin/malRes" title="统计结果">统计结果</a></li>
+    </ul>
+	</li>
+	<li ><a href="__ROOT__/DIM/index.php/Strategy/index" title="通报列表" >通报列表</a></li>
+	<li ><a <?php if($_SESSION['currpage']==3) echo 'class="current"'; else echo 'class="hide"';?> >配置</a>
+	<ul>
+    <li ><a href="__ROOT__/DIM/index.php/Configuration/configScan" title="运维配置查看" >运维配置查看</a></li>
+    <li ><a href="__ROOT__/DIM/index.php/Strategy/config" title="响应规则配置" >响应规则配置</a></li>
+     <li ><a href="__ROOT__/DIM/index.php/Unit/config" title="单位配置" >单位配置</a></li>
+    <li ><a href="__ROOT__/DIM/index.php/IpInfo/unitIP" title="单位关注IP配置" >单位关注IP配置</a></li>
+    <li ><a href="__ROOT__/DIM/index.php/CaseRule/config" title="事件-案件转换规则" >事件-案件转换规则</a></li>
+    </ul>
+	</li>
+</ul>
+</div>
+</div>

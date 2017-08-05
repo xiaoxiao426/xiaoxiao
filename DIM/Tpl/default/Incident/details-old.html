@@ -1,0 +1,885 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件详情</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"	type="text/css" />
+<style type="text/css">
+.myLeft
+{
+     background-color:rgb(110,137,110);
+    border:0px;
+    font-weight: bold;
+   	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	padding: 0.5em 0.75em;
+
+}
+.left
+{
+	padding: 0.5em 0.75em;
+	font-weight: bold;
+	border-right-width: 2px;
+	border-left-width: 2px;
+	border-top-width: 2px;
+	border-bottom-width: 0px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+
+}
+</style>
+<script>
+
+//处理案件
+function dealTheIncident(cid)
+{
+	if(!cid)
+		{
+		alert("受理失败,请尝试刷新!");
+		}
+	
+	if (!confirm("确定要处理吗？"))
+	{		
+		return;
+		}
+	
+	$.post("__URL__/dealTheIncident/",
+			{
+		     cid : "" + cid + ""
+			},function (data)
+			{
+				if(data.data == null)
+					{
+					alert("处理失败!");
+					}
+				else if(data.status == 0)
+					{
+					alert("受理失败!");
+					}
+				else if(data.status == 1)
+					{
+					$("#responser").html(data.data);
+					$("#ProcessState").html(data.info);
+					//alert(data.data);
+					$("#dealTheIncident").html("<a onclick='unDealTheIncident("+cid+");' >取消处理</a>");
+					}
+			}
+			,"json");
+	}
+	
+	function unDealTheIncident(cid)
+	{
+		if(!cid)
+		{
+		alert("取消失败,请尝试刷新!");
+		}
+	
+	if (!confirm("确定要取消吗？"))
+	{		
+		return;
+		}
+	//alert("ss");
+	$.post("__URL__/unDealTheIncident/",
+			{
+		     cid : "" + cid + ""
+			},function (data)
+			{
+				if(data.data == null)
+					{
+					alert("取消失败!");
+					}
+				else if(data.status == 0)
+					{
+					alert("取消失败!");
+					}
+				else if(data.status == 1)
+					{
+					//alert("here");
+					$("#responser").html("");
+					$("#ProcessState").html(data.info);
+					//alert("info:"+data.info);
+					//$("#dealTheIncident").html("<a onclick='unDealTheIncident("+cid+");' >取消处1理</a>");
+					$("#dealTheIncident").html("<a onclick='dealTheIncident("+cid+");' >处理本事件</a>");
+					}
+			}
+			,"json");
+	}
+function switchTab(ProTag, ProBox) {
+    for (i = 1; i < 4; i++) {
+        if ("caseTab" + i == ProTag) {
+            document.getElementById(ProTag).className = "on";
+			var spanT = "caseSpan"+i;
+			document.getElementById(spanT).className = "left";
+			/*switch(i)
+			{
+			case 1:
+			document.getElementById("caseMerge").onclick = "caseMerge('casea');";
+			break;
+			case 2:
+			document.getElementById("caseMerge").onclick = "caseMerge('caseb');";
+			break;
+			case 3:
+			document.getElementById("caseMerge").onclick = "caseMerge('casec');";
+			break;
+			default:
+			break;
+			}*/
+        } else {
+            document.getElementById("caseTab" + i).className = "";
+			document.getElementById("caseSpan"+i).className = "myLeft";
+        }
+        if ("caseCon" + i == ProBox) {
+            document.getElementById(ProBox).style.display = "";
+        } else {
+            document.getElementById("caseCon" + i).style.display = "none";
+        }
+    }
+}
+
+function switchBackTab(ProTag, ProBox) {
+    for (i = 1; i < 4; i++) {
+        if ("caseTabBack" + i == ProTag) {
+            document.getElementById(ProTag).className = "on";
+			var spanT = "caseSpanBack"+i;
+			document.getElementById(spanT).className = "left";
+			/*switch(i)
+			{
+			case 1:
+			document.getElementById("caseMerge").onclick = "caseMerge('casea');";
+			break;
+			case 2:
+			document.getElementById("caseMerge").onclick = "caseMerge('caseb');";
+			break;
+			case 3:
+			document.getElementById("caseMerge").onclick = "caseMerge('casec');";
+			break;
+			default:
+			break;
+			}*/
+        } else {
+            document.getElementById("caseTabBack" + i).className = "";
+			document.getElementById("caseSpanBack"+i).className = "myLeft";
+        }
+        if ("caseConBack" + i == ProBox) {
+            document.getElementById(ProBox).style.display = "";
+        } else {
+            document.getElementById("caseConBack" + i).style.display = "none";
+        }
+    }
+}
+/*全选*/
+function allChangeCheckBox(checkName,idName)
+{
+    var arrSon = document.getElementsByName(checkName);
+    var cbAll = document.getElementById(idName);
+    var tempState=cbAll.checked;
+
+    for(i=0;i<arrSon.length;i++) 
+    {
+    	if(arrSon[i].checked != tempState)
+    	{
+    		  arrSon[i].checked = tempState;
+    	}
+      }
+}
+		
+/*反选*/
+function oppoChangeCheckBox(checkName)
+{
+	 var arrSon = document.getElementsByName(checkName);
+	 for(i=0;i<arrSon.length;i++) 
+	 {	     
+	      arrSon[i].click();
+	 }	    
+}
+		
+//误报		
+function errorReport(checkName)
+{
+	var checkArr = checkName.split(",");
+	var strId="";
+	for(i=0;i<checkArr.length;i++)
+	{
+	if(checkArr[i].length > 0)
+		{
+		var str = "evidence"+checkArr[i];
+		strId += getChecked(str);
+		}		
+	}
+
+	if(strId.length == 0)
+	{
+	alert("请选择！");
+	return;
+	}
+	
+	$.post("__URL__/errorReport/id/"+strId, {
+			}, function(data) {
+			if(data.data==null){
+				alert("删除失败!");
+			   return;
+			 }else if(data.status==1){
+			     data=data.data;
+			     alert("删除成功!");
+			     window.location.reload();
+			     }else
+			    	 {
+			    	 alert("删除失败!");
+			    	 }
+	},"json");	
+}
+
+//删除响应ticket
+function deleteResponseTicket(strId)
+{
+	$.post("__ROOT__/DIM/index.php/ResponseTicket/delete/id/"+strId, {
+	}, function(data) {
+	if(data.data==null){
+		alert("删除失败!");
+	   return;
+	 }else if(data.status==1){
+	     data=data.data;
+	     alert("删除成功!");
+	     window.location.reload();
+	     }else
+	    	 {
+	    	 alert("删除失败!");
+	    	 }
+	},"json");	
+}
+//非误报
+function notErrorReport(checkName)
+{
+	var strId = getChecked(checkName);
+	if(strId.length == 0)
+		{
+		alert("请选择！");
+		return;
+		}
+	$.post("__URL__/notErrorReport/id/"+strId, {
+			}, function(data) {
+			if(data.data==null){
+				alert("fail!");
+			   return;
+			 }else if(data.status==1){
+			     data=data.data;
+			     alert("成功!");
+			     }		    	     	 
+	},"json");	
+}
+
+//合并
+function caseMerge(checkName)
+{
+	var strId = getChecked(checkName);
+	if(strId.length == 0)
+		{
+		alert("请选择！");
+		return;
+		}
+	$.post("__URL__/caseMerge/id/"+strId, {
+			}, function(data) {
+			if(data.data==null){
+				alert("fail!");
+			   return;
+			 }else if(data.status==1){
+			     data=data.data;
+			     alert("成功!");
+			     }		    	     	 
+	},"json");	
+}
+function getChecked(checkName)
+{
+	 var arrSon = document.getElementsByName(checkName);
+	 var str="";
+	 for(i=0;i<arrSon.length;i++) 
+	 {
+	    	if(arrSon[i].checked == true)
+	    	{
+	    		str += arrSon[i].id+",";
+	    	}
+	 }
+	 return str;	 
+}
+function delAttach(id)
+{
+	   //alert(id);
+	   $.post("__URL__/deleteAttach/", {
+			id : "" + id + ""
+		}, function(data) {
+			if(data.status==1){
+				  document.getElementById('attach_'+id).style.display = "none";		 		   
+		 			alert('删除成功!');
+	    	 }		
+	 	   else
+	 		 {
+	 		   alert('删除失败!');	 		 
+	 		  }
+		},"json");
+}
+</script>
+<script language="javascript">
+function uploadComplete(uploadIds,html,upFlag)
+{
+	if(upFlag == 'false')
+		{
+		alert("上传失败!");
+		return;
+		}
+	if(uploadIds == '' || uploadIds == ',')
+	{
+		alert("上传失败!");
+		return;
+	}
+	var idAl = document.getElementById('newUploadIds').value;
+	idAl += "," + uploadIds;
+    document.getElementById('newUploadIds').value = idAl;      
+    var testJson =  eval('(' + html + ')');
+    var i = 1;      
+    var newHtml="";
+    for (var p in testJson) {    
+      var name = testJson[p]['name'];
+ 	   var id = testJson[p]['id'];
+ 	   newHtml += "<div id=\"attach_"+id+"\"><A>"+name+"</A><IMG SRC=\"__PUBLIC__/Images/del.gif\" WIDTH=\"20\" HEIGHT=\"20\"  onclick=\"delAttach("+id+");\" BORDER=\"0\" ALT=\"删除附件\"  style=\"cursor:hand;\" align=\"absmiddle\"></div>";
+		 // test += testJson[i.toString()]['id']+"\t"+testJson[i]['name'];
+		  i++;
+		 }  
+    
+    var htmlAl = document.getElementById('myAttachList').innerHTML;
+    htmlAl += newHtml;
+    document.getElementById('myAttachList').innerHTML = htmlAl;
+    document.getElementById('upload').reset();
+}
+
+function delAttach(id)
+{
+	   //alert(id);
+	   $.post("__URL__/deleteAttach/", {
+			id : "" + id + ""
+		}, function(data) {
+			if(data.status==1){
+				  document.getElementById('attach_'+id).style.display = "none";
+		 		   //删除页面的id,解析id
+		 		   var idA = document.getElementById('oldUploadIds').value; 
+		 		   var ids = new Array();
+		 		     ids=idA.split(",");
+		 		     idA = "";
+		 		    var i = 0;
+		 		    for (i=0;i<ids.length ;i++ )
+		 		    	{
+		 		    	if(id == ids[i])
+		 		    		{
+		 		    		continue;
+		 		    		}
+		 		    	idA += ids[i]+",";
+		 		    	}
+		 		   document.getElementById('oldUploadIds').value = idA;	 
+		 		   
+		 		  idA = document.getElementById('newUploadIds').value; 
+		 		     ids=idA.split(",");
+		 		     idA = "";
+		 		    for (i=0;i<ids.length ;i++ )
+		 		    	{
+		 		    	if(id == ids[i])
+		 		    		{
+		 		    		continue;
+		 		    		}
+		 		    	idA += ids[i]+",";
+		 		    	}
+		 		   document.getElementById('newUploadIds').value = idA;	 
+		 			alert('删除成功!');
+	    	 }		
+	 	   else
+	 		 {
+	 		   alert('删除失败!');	 		 
+	 		  }
+		},"json");
+}
+
+function ConfirmDel()
+{
+	if (confirm("确定要删除吗？"))
+	{
+		return true;
+	}else{
+		return false;
+		}
+	}
+</script>
+<style>
+.myListTable
+{
+width:100%;
+border-collapse:collapse;
+}
+.myListTable td
+{
+border:black solid 1px; 
+}
+.ticket-list
+{
+text-align:center;
+}
+
+
+</style>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center">
+<include file="Public:top" />
+<include file="Public:multiMenu" />
+<div style="height: 25px;"></div>
+<div id="content" style="min-height: 600px;">
+<div id="header" style="margin-top: 15px; padding-bottom: 10px; background-color: #d4e6f6;">
+<div id="page-navigation" style="background-color: #d4e6f6;" >
+<ul id="page-menu" style="background-color: #d4e6f6;top:-0.6em;">
+<?php if($qx){ ?>
+	<li class="first"><a
+		href="__ROOT__/DIM/index.php/Incident/edit/id/{$vo.id}"
+		>编辑案件</a></li>
+	<li class="separator"><B>&#183;</B></li>
+	<li><a href="__ROOT__/DIM/index.php/Incident/delete/id/{$vo.id}" onclick="return ConfirmDel();"
+		>删除本事件</a></li>
+	<li class="separator"><B>&#183;</B></li>
+	<li id="dealTheIncident">
+	<?php if(!$vo['CaseResponsor']){ ?>
+	<a onclick="dealTheIncident({$vo.id});" >处理本事件</a>
+	<?php } else { ?>
+	<a onclick="unDealTheIncident({$vo.id});" >取消处理</a>
+	<?php } ?>
+	</li>
+<?php }?>
+	<li class="separator"><B>&#183;</B></li>
+	<li><a href="__ROOT__/DIM/index.php/Incident/index"
+		target="_blank">搜索事件库</a></li>
+	
+	<li class="separator"><B>&#183;</B></li>
+	<li><a href="__ROOT__/DIM/index.php/IpInfo/reportIP/id/{$vo.id}"
+		target="_blank">添加IP黑名单</a></li>
+	<!--  <li class="separator"><B>&#183;</B></li>
+	<li><a href="__ROOT__/DIM/index.php/Coordination/add/id/{$vo.id}"
+		>协查请求</a></li>
+	<li class="separator"><B>&#183;</B></li>
+	<li><a href="__ROOT__/DIM/index.php/Sms/add/id/{$vo.id}"
+		>短信提醒</a></li>-->
+	<li class="separator"><B>&#183;</B></li>
+	<li><!-- <a href="__ROOT__/DIM/index.php/Public/tool/id/{$vo.id}"
+		target="_blank">响应辅助工具</a> -->
+	
+		  <a href="#" id="firstMenu"> 响应辅助工具</a>
+	  
+<div class="downMenus">
+		  <div class="secondMenus " id="sm1">
+		  <ul style="width:100%;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px">
+		   <li id="sm11" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a target="_blank"> WHOIS&nbsp;</a></li>
+		   <li id="sm12" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a target="_blank"> 沙盒&nbsp;&nbsp;</a></li>
+		   <li id="sm13" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a target="_blank"> IP归属</a></li>
+		   <li id="sm14" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a target="_blank"> 搜索&nbsp;&nbsp;</a></li>
+		  </ul>
+		 </div>
+		 
+		 <div class="thridMenus" id="tm11">
+		  <ul style="width:100%;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px">
+		   <li id="tm131" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://whois.iana.org" target="_blank">IANA</a></li>
+		   <li id="tm132" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://whois.internic.net" target="_blank">INTERNIC</a></li>
+		   <li id="tm133" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://whois.arin.net" target="_blank">ARIN</a></li>
+		   <li id="tm133" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://whois.ripe.net" target="_blank">RIPE</a></li>
+		    <li id="tm133" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://www.apnic.net/" target="_blank">APNIC</a></li>
+		  </ul>
+		 </div>
+		 		 
+		  
+		 <div class="thridMenus" id="tm12">
+		  <ul style="width:100%;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px">
+		   <li id="tm231" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://urlquery.net/" target="_blank">URLQUERY</a></li>
+		  </ul>
+		 </div>
+		 
+		  <div class="thridMenus" id="tm13">
+		  <ul style="width:100%;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px">
+		   <li id="tm331" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="https://ipdb26.njnet.edu.cn/" target="_blank">IPDB</a></li>
+		  </ul>
+		 </div>
+		 
+		  <div class="thridMenus" id="tm14">
+		  <ul style="width:100%;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px">
+		   <li id="tm431" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://www.google.com.hk/" target="_blank">Google</a></li>
+		   <li id="tm432" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://www.baidu.com/" target="_blank">Baidu</a></li>
+		   <li id="tm433" style="font-family:'宋体';white-space:pre;display:block;padding: 0px;list-style-image: none;list-style-type: none;margin: 0px"><a href="http://www.wiki.com/" target="_blank">Wiki</a></li>
+		  </ul>
+		 </div>
+		 
+</div>
+	</li>
+	
+</ul>
+</div>
+</div>
+<?php $curCaseId = $vo['id']; 
+$curCaseB = $vo['CaseId'];
+?>
+<div style="clear:both;"></div>
+<input type="hidden" value="<?php echo $curCaseId;?>" name="caseId" id="caseId" />
+<input type="hidden" value="<?php echo $curCaseB;?>" name="curCaseB" id="curCaseB" />
+<table class="ticket-summary" width="100%" style="margin-top: 28px;">
+	<tbody>
+		<tr style="width: 960px">
+			<td class="boxcontainer" vAlign="top" style="width:100%;">
+			<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics">
+			<div class="titlebox-title"><span class="widget"></span><span class="left">案件&nbsp;#{$vo.CaseId}</span><span
+				class="right-empty"></span></div>
+			<div class="titlebox-content" >
+			<table>
+				<tbody>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;"><B>负责人:</B></td>
+						<td class="value" id="responser">{$vo.name}</td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;"><B>主题:</B></td>
+						<td class="value">{$vo.Subject}</td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;"><B>状态:</B></td>
+						<td class="value" id="ProcessState"><?php echo get_case_statue($vo['ProgressState']);?></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;"><B>分类:</B></td>
+						<td class="value"><?php echo get_threat_type_name($vo['TID']); ?></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;"><B>首次检测:</B></td>
+						<td class="value">{$vo.StartTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<B >最近活跃:</B>{$vo.LastTime}
+						</td>
+					</tr>					
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;"><B>处理期限:</B></td>
+						<td class="value">{$vo.DueTime}
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<B >解决日期:</B>{$vo.ResolvedTime}
+						</td>
+					</tr>			
+				<!--  	<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁源IP:</B></td>
+						<td class="value"><a href="__URL__/threatIP/flag/1/id/{$vo.CaseId}" target="_blank">{$vo.ThreatSrcIPList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁源域名:</B></td>
+						<td class="value"><a href="__URL__/threatDomain/flag/1/id/{$vo.CaseId}" target="_blank">{$vo.ThreatSrcDomainList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁宿IP:</B></td>
+						<td class="value"><a href="__URL__/threatIP/flag/0/id/{$vo.CaseId}" target="_blank">{$vo.ThreatDstIPList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁宿域名:</B></td>
+						<td class="value"><a href="__URL__/threatDomain/flag/0/id/{$vo.CaseId}" target="_blank">{$vo.ThreatDstDomainList}</a></td>
+					</tr>
+					-->
+					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;word-wrap:break-word;word-break:break-all;"><B>描述:</B></td>
+						<td class="value" style="white-space:pre-wrap;">{$vo.Note}</td>
+					</tr>
+					<?php 
+					if($vo['MergeType'] == 1)
+                       {?>
+                       
+  					<tr>
+						<td class="label" style="width: 10%; min-width: 80px;word-wrap:break-word;word-break:break-all;"><B>子事件列表:</B></td>
+						<td class="value" style="white-space:pre-wrap;">
+<?php 
+$k = 0;
+for($k=0;$k<count($childList);$k++)
+{
+echo "<a style='color:blue;' href='__ROOT__/DIM/index.php/Incident/details/cid/".$childList[$k]['CaseId']."'>".$childList[$k]['CaseId']."</a>";
+echo "&nbsp";
+}
+?>
+</td>
+					</tr>
+				<?php	}
+					?>
+					<tr>
+						<td>
+						<div style="height:1px;"></div>
+						</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+			</div>
+			</div>
+			</div>
+			</td>
+		</tr>
+			
+			<tr style="width: 960px">
+			<td class="boxcontainer" vAlign="top" colspan="2">
+			<div class="tickets-list-report" style="width: 100%; height: 100%;">
+			<div class="titlebox" id="detailResponseTitle"
+				style="width: 96%; height: 100%; padding-left: -0.5em; padding-right: 0.5em;">
+			<div class="titlebox-title"><span class="widget"><a
+				title="toggle visibility" onclick="rollup('detailResponse');"></a></span><span class="left">响应过程</span><span
+				class="spanRight" style="margin-right:7px;margin-top:9px;">
+			<?php if($qx){ ?>	<a href="__ROOT__/DIM/index.php/ResponseTicket/add/id/{$curCaseB}"
+		 style="color:blue;">增加</a>
+		 <?php }?>
+		 </span></div>
+			<div class="titlebox-content" id="detailResponseContent">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+				<tbody>
+					<tr class="evenline">
+					    <th class="collection-as-table">编号</th>
+					    <th class="collection-as-table">时间</th>
+						<th class="collection-as-table">报告人</th>
+						<th class="collection-as-table">报告信息</th>
+						<th class="collection-as-table">响应人</th>
+						<th class="collection-as-table" style="word-wrap: break-word;word-break:break-all;">响应内容</th>											
+						<th class="collection-as-table">附件</th>											
+			<?php if($qx){ ?>			<th class="collection-as-table" style="width:65px;">操作</th> <?php }?>
+					</tr>
+					<?php $myCount = 0;?>
+					<volist id="vo" name="responseList">
+					<tr	<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+						"class='evenline'";?> >
+              <td class="collection-as-table" style="word-wrap: break-word;word-break:break-all;">{$vo['id']}</td>
+              <td style="word-wrap: break-word;word-break:break-all;">{$vo['ResponseTime']}</td>
+              <td class="collection-as-table" style="word-wrap: break-word;word-break:break-all;">{$vo['Reporter']}</td>
+              <td  style="word-wrap: break-word;word-break:break-all;text-align:left;">{$vo['ReportContent']}</td>
+              <td class="collection-as-table" style="word-wrap: break-word;word-break:break-all;">{$vo['Responser']}</td>
+              <td  style="word-wrap: break-word;word-break:break-all;text-align:left;">{$vo['ResponseContent']}</td>
+              <td class="collection-as-table" style="word-wrap: break-word;word-break:break-all;">         
+             <?php //输出附件列表
+              
+$attachment = $vo['attchment'];
+if(count($attachment)>0) echo "<br />";
+for($jj=0;$jj<count($attachment);$jj++)
+{
+echo "<a href='__URL__/download/CaseId/".$curCaseB."/dname/".$attachment[$jj]['SaveName']."/rname/".urlencode($attachment[$jj]['FileName'])."'</a>".$attachment[$jj]['FileName']."<br />";
+}
+              ?>
+              </td>
+    <?php if($qx){ ?><td style="width:65px;"><a style="color:blue;" href="__ROOT__/DIM/index.php/ResponseTicket/edit/id/{$vo['id']}" >编辑</a>
+              &nbsp;<a style="color:blue;" onclick="deleteResponseTicket({$vo['id']});">删除</a></td> <?php }?>
+		</tr>
+					</volist>
+				</tbody>
+			</table>
+			<hr class="clear" />
+			</div>
+			</div>
+			</div>
+			</td>
+		</tr>		
+		
+	<tr style="width: 960px">
+			<td class="boxcontainer" vAlign="top" style="width:100%;">
+			<div class="tickets-list-report" style="width:97%;height: 100%;">
+			<div class="titlebox" id="detailEvidenceTitle"
+				style="width: 100%; height: 100%; padding-left: -0.5em; padding-right: 0.5em;">
+			<div class="titlebox-title"><span class="widget"><a
+				title="toggle visibility" onclick="rollup('detailEvidence');"></a></span><span class="left">相关报告</span><span
+				class="spanRight" style="margin-right:7px;margin-top:9px;"><!--  <a style="color: blue;" href="__URL__/EvidenceExport/CaseId/{$curCaseB}">导出&nbsp;</a><a style="color: blue;" href="__ROOT__/DIM/index.php/Evidence/add/id/{$curCaseId}">增加&nbsp;</a>-->
+			 <?php if($qx){ ?>	<a style="color: blue;" onclick="errorReport('{$evidenceName}');">误报&nbsp;</a> <?php }?> </span></div>
+			<div class="titlebox-content" id="detailEvidenceContent">
+			<?php 
+			$i = 0;
+            for($ei=0;$ei<sizeof($evidenceType);$ei++)
+{  
+            switch($evidenceType[$ei]['EvidenceType'])
+				{
+					case 0:
+						break;
+						/* EvidenceABNMDomain*/
+					case 1:
+			?><include file="EvidenceTpl:ABNMDomain" /><?php			
+						break;
+					case 2:
+?><include file="EvidenceTpl:FastFlux" /><?php
+						break;
+					case 3:
+?><include file="EvidenceTpl:Common" /><?php
+						break;
+					case 4:
+?><include file="EvidenceTpl:Common" /><?php
+						break;
+						
+					case 5:
+?><include file="EvidenceTpl:IsoLink" /><?php					
+						break;
+						/*EvidenceIRCBotByChannel*/
+					case 6:
+?><include file="EvidenceTpl:IrcBotByChannel" /><?php	
+						break;
+					case 7:
+?><include file="EvidenceTpl:MalWeb" /><?php
+						break;
+					case 8:
+?><include file="EvidenceTpl:SQLI" /><?php
+					break;
+					case 10:
+?><include file="EvidenceTpl:NBOSDDOS" /><?php
+						break;					
+					case 13:
+?><include file="EvidenceTpl:NBOSUahPort" /><?php
+						break;
+					case 12:
+                    case 104:
+					case 14:
+?><include file="EvidenceTpl:Botnet" /><?php
+						break;
+					case 101:
+?><include file="EvidenceTpl:Suricata" /><?php
+						break;
+case 110:
+?><include file="EvidenceTpl:WebShell" /><?php
+						break;
+					default:
+?><include file="EvidenceTpl:Common" /><?php
+						break;
+				}
+}
+			?>
+			</div>
+			</div>
+			</div>
+			</td>
+			</tr>
+			<tr style="width: 960px">
+			<td class="boxcontainer" vAlign="top" style="width:100%;">
+			<div class="tickets-list-report" style="width:97%;height: 100%;">
+			<div class="titlebox" id="detailCaseTitle"
+				style="width: 100%; height: 100%; padding-left: -0.5em; padding-right: 0.5em;">
+			<div class="titlebox-title"><span class="widget"><a
+				title="toggle visibility" onclick="rollup('detailCase');"></a></span><span id="caseSpan1" class="left" style="margin-left:0.75em;"><a href="#" id="caseTab1" onclick="switchTab('caseTab1','caseCon1');this.blur();return false;">源相关</a></span><span  id="caseSpan2"  class="myLeft" style="margin-left:0.1em;"><a href="#" id="caseTab2" onclick="switchTab('caseTab2','caseCon2');this.blur();return false;">宿相关</a></span><span class="myLeft" id="caseSpan3" style="margin-left:0.1em;">
+				<a href="#"  id="caseTab3" onclick="switchTab('caseTab3','caseCon3');this.blur();return false;">源/宿相关</a></span><span
+				class="spanRight" style="margin-right:7px;margin-top:9px;"><!-- CaseMerge<a style="color: blue;" id="caseMerge" onclick="caseMerge('case');">合并</a> --></span></div>
+			<div id="detailCaseContent">
+			<div class="titlebox-content" id="caseCon1">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+				<tbody>
+					<tr class="collection-as-table">
+						<th class="collection-as-table"><input type="checkbox" id="caseaTitle" onclick="allChangeCheckBox('casea','caseaTitle');"/></th>
+						<th class="collection-as-table">编号</th>
+						<th class="collection-as-table">主题</th>
+						<th class="collection-as-table">类型</th>
+						<th class="collection-as-table">创建日期</th>
+						<th class="collection-as-table">网段总数</th>		
+						<th class="collection-as-table" style="width:400px;">网段(国家|组织|网段)</th>	
+						<th class="collection-as-table">合并</th>						
+					</tr>
+				<?php $myCount = 0; ?>
+				<volist id="vo" name="srcRelatedCases">
+				<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?>>
+				<td><input type="checkbox" name="casea" id="{$vo.id}"/></td>
+				<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['CaseId']}</a></td>
+                <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['Subject']}</a></td>
+                 <td class="collection-as-table"><?php echo get_threat_type_name($vo['TID']);?></td>
+                 <td class="collection-as-table-break">{$vo['StartTime']}</td>
+                  <td class="collection-as-table-break">{$vo['totalCount']}</td>
+                <td class="collection-as-table-break" style="width:400px;"><table class="myListTable">{$vo['addr']}</table></td>
+                <td class="collection-as-table"><a style="color:blue;" href="__URL__/CaseMerge/id/{$curCaseId}/cid/{$vo['CaseId']}/sid/{$curCaseB}">合并</a></td>
+				</tr>
+				</volist>					
+					<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?> ><td colspan="8" style="text-align:left;">
+					<input type="checkbox" id="caseAlla"onclick="allChangeCheckBox('casea','caseAlla');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="caseOppoa"  onclick="oppoChangeCheckBox('casea');"></input>反选&nbsp;&nbsp;
+					</td></tr>
+				</tbody>
+			</table>
+			</div>
+			<!--casecon1 -->
+			<div class="titlebox-content" id="caseCon2" style="display:none;">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+				<tbody>
+					<tr class="collection-as-table">
+						<th class="collection-as-table"><input type="checkbox" id="casebTitle" onclick="allChangeCheckBox('caseb','casebTitle');"/></th>
+						<th class="collection-as-table">编号</th>
+						<th class="collection-as-table">主题</th>
+						<th class="collection-as-table">类型</th>
+						<th class="collection-as-table">创建日期</th>
+						<th class="collection-as-table">网段总数</th>		
+						<th class="collection-as-table" style="width:400px;">网段(国家|组织|网段)</th>		
+						<th class="collection-as-table">合并</th>					
+					</tr>
+					<?php $myCount = 0; ?>
+				<volist id="vo" name="dstRelatedCases">
+				<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?>>
+				<td><input type="checkbox" name="casea" id="{$vo.id}"/></td>
+				<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['CaseId']}</a></td>
+                <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['Subject']}</a></td>
+                 <td class="collection-as-table"><?php echo get_threat_type_name($vo['TID']);?></td>
+                 <td class="collection-as-table-break">{$vo['StartTime']}</td>
+                 <td class="collection-as-table-break">{$vo['totalCount']}</td>
+                <td class="collection-as-table-break" style="width:400px;"><table class="myListTable">{$vo['addr']}</table></td>
+                <td class="collection-as-table"><a style="color:blue;" href="__URL__/CaseMerge/id/{$curCaseId}/cid/{$vo['CaseId']}/sid/{$curCaseB}">合并</a></td>
+				</tr>
+				</volist>		
+					<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?> ><td colspan="8" style="text-align:left;">
+					<input type="checkbox" id="caseAllb"onclick="allChangeCheckBox('caseb','caseAllb');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="caseOppob"  onclick="oppoChangeCheckBox('caseb');"></input>反选&nbsp;&nbsp;
+					</td></tr>
+				</tbody>
+			</table>
+			</div>
+			<!-- caseCon2 -->
+			<div class="titlebox-content" id="caseCon3" style="display:none;">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+				<tbody>
+					<tr class="collection-as-table">
+						<th class="collection-as-table"><input type="checkbox" id="casecTitle" onclick="allChangeCheckBox('casec','casecTitle');"/></th>
+						<th class="collection-as-table">编号</th>
+						<th class="collection-as-table">主题</th>
+						<th class="collection-as-table">类型</th>
+						<th class="collection-as-table">创建日期</th>
+						<th class="collection-as-table">源网段总数</th>		
+						<th class="collection-as-table" style="width:250px;">网段(国家|组织|网段)</th>
+						<th class="collection-as-table">宿网段总数</th>		
+						<th class="collection-as-table" style="width:250px;">宿网段(国家|组织|网段)</th>
+						<th class="collection-as-table">合并</th>					
+					</tr>
+					<?php $myCount = 0; ?>
+				<volist id="vo" name="srcDst">
+				<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?>>
+				<td><input type="checkbox" name="casea" id="{$vo.id}"/></td>
+				<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['CaseId']}</a></td>
+                <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['Subject']}</a></td>
+                 <td class="collection-as-table"><?php echo get_threat_type_name($vo['TID']);?></td>
+                 <td class="collection-as-table-break">{$vo['StartTime']}</td>
+                <td class="collection-as-table-break">{$vo['sTotalCount']}</td>
+                <td class="collection-as-table-break" style="width:250px;"><table class="myListTable">{$vo['saddr']}</table></td>
+                <td class="collection-as-table-break">{$vo['dTotalCount']}</td>
+                <td class="collection-as-table-break" style="width:250px;"><table class="myListTable">{$vo['daddr']}</table></td>
+                <td class="collection-as-table"><a style="color:blue;" href="__URL__/CaseMerge/id/{$curCaseId}/cid/{$vo['CaseId']}/sid/{$curCaseB}">合并</a></td>
+				</tr>
+				</volist>				
+					<tr <?php if($myCount++ % 2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?> ><td colspan="10" style="text-align:left;">
+					<input type="checkbox" id="caseAllc"onclick="allChangeCheckBox('casec','caseAllc');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="caseOppoc"  onclick="oppoChangeCheckBox('casec');"></input>反选&nbsp;&nbsp;
+					</td></tr>
+				</tbody>
+			</table>
+			</div> 
+			<!-- caseCon3 -->
+			</div>
+			</div>
+			</div>
+			</td>
+		</tr>
+		<tr style="width: 960px">
+		<td class="boxcontainer" vAlign="top" style="width:100%;">
+		<include file="back_relate" /></td>
+		</tr>
+	</tbody>
+</table>
+<!-- end of 待处理事件-->
+</div>
+<include file="Public:footer" /></div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet" type="text/css" />
+<title>首页</title>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center">
+<include file="Public:top" />
+<div style="height:35px;"></div>
+<div id="content" style="min-height: 600px;">  
+     <div class="titlebox" id="indexTitle">
+      <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a href="__ROOT__/DIM/index.php/Incident/index" target="_blank">响应建议</a></span></div>
+      <div   class="titlebox-content" id="indexContent">
+        <table class="ticket-list" width="100%" style="font-size: 0.8em;">
+          <tbody>
+            <tr class="collection-as-table">            
+              <th class="collection-as-table">事件编号</th>
+               <th class="collection-as-table">单位</th>             
+              <th class="collection-as-table">类型</th>
+              <th class="collection-as-table">操作</th>
+            </tr>
+            <?php $myCount = 0;
+            ?>
+         <volist id="list" name="list">
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo "class='evenline'";?> 
+		  >		
+              <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/cid/{$list.CaseID}" target="_blank">{$list.CaseID}</a></td>
+              <td class="collection-as-table-break">{$list.Unit}</td>   
+              <td class="collection-as-table-break"><?php echo get_threat_class_type_name($list['TcID'])."--".get_threat_type_name($list['TID']); ?></td>           
+              <td class="collection-as-table-break">
+              <?php if($list['Status'] == 1) 
+                          {echo "已发送"; 
+}else { ?>
+ <a style="color:blue;" href="__APP__/Strategy/report/tid/{$list.TID}/sid/{$list.id}/cid/{$list.CaseID}/docid/<?php echo urlencode($list['ResDocID']);?>/status/{$list.Status}">查看</a>
+<?php
+}?>
+              </td>
+		</tr>
+		</volist>
+          </tbody>
+        </table>
+        <div style="text-align:center;margin-top:5px;">{$page}</div>
+      </div>
+    </div> 
+    <!-- end of 待处理事件-->
+   </div>
+  <include file="Public:footer" />
+    </div>
+</body>
+</html>

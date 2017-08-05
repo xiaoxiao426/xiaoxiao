@@ -1,0 +1,51 @@
+<style>
+.label
+{
+width:13%;
+}
+</style>
+<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr>
+			<td class="label"><b>被攻击IP:</b></td>
+			<td class="value"><input class="required" name="TargetIP"
+						id="TargetIP" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>攻击IP数目:</b></td>
+			<td class="value"><input class="required" name="IPNum"
+						id="IPNum" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>攻击报文数量:</b></td>
+			<td class="value"><input class="required" name="PktNum"
+						id="PktNum" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>攻击流量:</b></td>
+			<td class="value"><input class="required" name="ByteNum"
+						id="ByteNum" value="" size="50" /></td>
+		</tr>
+		<tr class="edit-custom-field">
+					<td class="label"><B>附件:</B></td>
+					<td class="value">
+            <input type="file"	name="file" />
+		</tr>
+		<tr>
+			<td class="label"><b>证据内容:</b></td>
+			<td colspan="2"><textarea id="Content" cols="72" rows="15"
+				name="Content"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div class="submit" style="text-align: center;">
+			<div class="extra-buttons"></div>
+			<div class="buttons"><span class="caption"></span><input
+				class="button" name="create" value="创建" type="submit" /></div>
+			<div class="submit-clear"></div>
+			</div>
+			</td>
+		</tr>
+
+	</tbody>
+</table>

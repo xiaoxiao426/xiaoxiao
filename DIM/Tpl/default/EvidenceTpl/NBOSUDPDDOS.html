@@ -1,0 +1,63 @@
+
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+	<?php $tid = $NBOSUDPDDOS[0]['TID'];?>
+	<!-- ddos -->
+	<?php if($tid == 300005) { ?>
+		<tr class="evenline">
+			<th class="collection-as-table">IP</th>
+			<th class="collection-as-table">源/宿端口</th>
+			<th class="collection-as-table">总流量(MB)</th>
+			<th class="collection-as-table">出现次数</th>
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;	?>
+		
+		<?php for($i=0;$i<count($NBOSUDPDDOS);$i++)
+			{
+				$vo = $NBOSUDPDDOS[$i];
+			?>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+             <td class="collection-as-table"><?php echo long2ip($vo['IP']);?></td>
+             <td class="collection-as-table-break"><?php  EchoPort($vo['SrcPort']);echo "/"; EchoPort($vo['DstPort']); ?></td>
+             <td class="collection-as-table-break"><?php echo $vo['TotalFlow'];?></td>
+             <td class="collection-as-table-break"><?php echo $vo['OccurNum'];?></td>
+              <td class="collection-as-table-break" ><?php echo $vo['FirstTime'];?></td>
+              <td class="collection-as-table-break" ><?php echo $vo['LastTime'];?></td>
+		</tr>
+		<?php } ?>
+		
+		<!-- web危险端口 -->
+		<?php } else if($tid == 110001) { ?>
+		
+		<tr class="evenline">
+			<th class="collection-as-table">IP</th>
+			<th class="collection-as-table">危险端口</th>
+			<th class="collection-as-table">总流量（KB）</th>
+			<th class="collection-as-table">入方向流量（KB）</th>
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;	?>
+		
+		<?php for($i=0;$i<count($NBOSUDPDDOS);$i++)
+			{
+				$vo = $NBOSUDPDDOS[$i];
+?>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+             <td class="collection-as-table"><?php echo long2ip($vo['IP']);?></td>
+             <td class="collection-as-table-break"><?php echo $vo['Comment'];?></td>
+             <td class="collection-as-table-break"><?php echo $vo['TotalFlow'];?></td>
+             <td class="collection-as-table-break"><?php echo $vo['TotalInKB'];?></td>
+              <td class="collection-as-table-break" ><?php echo $vo['FirstTime'];?></td>
+              <td class="collection-as-table-break" ><?php echo $vo['LastTime'];?></td>
+		</tr>
+		<?php } ?>
+		<?php } ?>
+	</tbody>
+</table>

@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<div class="titlebox ticket-info-basics">
+<div class="titlebox-title"><span class="left">协查请求 #{$vo.id}</span><span
+	class="right-empty"></span></div>
+
+<div class="titlebox-content ">
+<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr>
+			<td class="label"><b>事件:</b></td>
+			<td class="value"><a target="_blank"
+				href="__ROOT__/DIM/index.php/Incident/details/id/{$vo.CaseId}">{$vo.Subject}</a></td>
+		</tr>
+		<tr>
+			<td class="label"><b>拥有人:</b></td>
+			<td class="value">{$vo.Receiver}</td>
+		</tr>
+		<tr>
+			<td class="label"><b>主题:</b></td>
+			<td class="value" colspan="2">{$vo.Subject}</td>
+		</tr>
+		<tr>
+			<td class="label"><b>通信人:</b></td>
+			<td class="value">{$vo.ReceiverAddress}</td>
+		</tr>
+		<tr>
+			<td class="label"><b>抄送:</b></td>
+			<td class="value">{$vo.Cc}</td>
+		</tr>
+		<tr>
+			<td class="label"><b>创建时间:</b></td>
+			<td class="value">{$vo.CreateTime}</td>
+		</tr>
+		<!--  	<tr>
+			<td>&nbsp;</td>
+			<td colspan="2">
+			<table>
+				<tbody>
+					<tr>
+						<td><b>签名:</b></td>
+						<td><input
+							name="sign" value="1" type="checkbox" /></td>
+						<td><b>加密:</b></td>
+						<td><input
+							name="encrypt" value="1" type="checkbox" /></td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>-->
+		<tr>
+			<td class="labeltop"><b>消息:</b></td>
+			<td colspan="2"><textarea id="Content" cols="72" rows="15"
+				name="Content" readonly="readonly">{$vo.Content}</textarea></td>
+		</tr>
+	</tbody>
+</table>
+<hr class="clear" />
+</div>
+</div>
+
+</div>
+<!-- end of 待处理事件-->
+<include file="Public:footer" />
+</div>
+</body>
+</html>

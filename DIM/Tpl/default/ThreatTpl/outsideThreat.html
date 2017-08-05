@@ -1,0 +1,28 @@
+ <!-- 攻击活动 -->
+ <div class="titlebox" id="attackTitle">
+      <div class="titlebox-title"><span class="widget">
+      <!--  <a title="toggle visibility" onclick="rollup('attack');"></a> --></span><span 
+      class="left"><a target="_blank">本地区外部威胁</a></span><span class="spanRight"></span></div>
+      <div   class="titlebox-content" id="attackContent">
+        <table class="ticket-list" border="0" cellspacing="0" cellpadding="1" 
+      width="100%">
+          <tbody>
+           <tr class="collection-as-table">
+              <th class="collection-as-table">分类</th>
+             <th class="collection-as-table">涉及单位数</th>
+              <th class="collection-as-table">涉及主机数</th>
+            </tr>		
+		<tr class='oddline'>
+		<td class="collection-as-table"><a style="color:#000;" target="_blank" href="__ROOT__/DIM/index.php/Threat/UnitTIDSum/gid/3">攻击</a></td>
+              <td class="collection-as-table"><?php myEcho($DDoS['unum']); ?></td><!-- __ROOT__/DIM/index.php/Threat/index/gid/3/tpl/DDoS -->
+              <td class="collection-as-table"><?php myEcho($DDoS['case']); ?></td>
+		</tr>
+		<tr class='evenline'>
+		<td class="collection-as-table"><a style="color:#000;" target="_blank" href="__ROOT__/DIM/index.php/Threat/UnitTIDSum/gid/4">外部威胁点</a></td>
+              <td class="collection-as-table"><?php myEcho($virus['unum']); ?></td><!-- __ROOT__/DIM/index.php/Threat/index/gid/4/tpl/UahPort -->
+              <td class="collection-as-table"><?php myEcho($virus['case']); ?></td>
+		</tr>
+          </tbody>
+        </table>
+      </div>
+    </div> 

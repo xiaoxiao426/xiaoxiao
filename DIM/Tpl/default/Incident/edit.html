@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件编辑</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<include file="Public:calendar" />
+<script language="javascript">
+function TcIdChangeTid(id)
+{
+	$("#TID").empty();
+	$("#TID").prepend("<option value=''>-</option>");
+	$.post("__URL__/getTypeById/", {
+		id : "" + id + ""
+	}, function(data) {
+		if(data.data==null){
+	 		   return;
+	 	   }else if(data.status==1){
+	 		  
+	    		 data=data.data;		
+	    		 for(var i=0;i<data.length;i++){
+	   				$("#TID").append("<option value='"+data[i].TID+"'>"+data[i].Name+"</option>");
+	    		 }      	 
+	    	 }		    	     	 
+	},"json");
+}
+</script>
+
+<style>
+.myListTable
+{
+width:100%;
+border-collapse:collapse;
+}
+.myListTable td
+{
+border:black solid 1px; 
+}
+.ticket-list
+{
+text-align:center;
+}
+
+
+</style>
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+			<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics ">
+			<div class="titlebox-title"><span class="widget"></span><span class="left">修改案件
+			#{$vo.CaseId}</span><span class="right-empty"></span></div>
+			<form enctype="multipart/form-data" method="post"
+	action="__URL__/update">
+	<input name="Type" value="Local" type="hidden" />
+	<input name="id" name="id" value="{$vo.id}" type="hidden"/>
+	<input name="CaseId" id="CaseId" value="{$vo.CaseId}" type="hidden" />
+			<div id="titlebox" class="titlebox-content ">
+			<table >
+				<tr class="edit-custom-field">
+					<td class="label"><B>拥有人:</B></td>
+					<td>{$vo.name}</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>主题:</B></td>
+					<td class="value"><input name="Subject"
+						id="Subject" value="{$vo.Subject}" size="50" /></td>
+					<td class="cflabel cftype-Select cfname-classification"><B>状态:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select
+						name="ProgressState" id="ProgressState">
+						<?php $cs= get_case_status_array()?>
+						<option value="">&nbsp;&nbsp;-</option>
+						<volist id="cs" name="cs">
+						<option value="{$cs.name}" <?php if($vo['ProgressState'] ==$cs['name']) echo "selected='selected'";?>>{$cs.dep}</option>
+						</volist>						
+					</select></td>
+				</tr>
+
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Select cfname-classification"><B>类型:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select
+						name="TID" id="TID">
+						<option value="">-</option>		
+						<volist id="TID" name="threatType">
+						<option value="{$TID['TID']}" <?php if($vo['TID'] ==$TID['TID']) echo "selected='selected'";?>>{$TID['Name']}</option>
+						</volist>			
+					</select></td>
+
+					<td class="cflabel cftype-Select cfname-classification"><B>分类:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select onchange="TcIdChangeTid(this.value)"
+						name="TcID" id="TcID">
+						<option value="">-</option>		
+						<volist id="TcID" name="threatClassType">
+						<option value="{$TcID['TcID']}" <?php if($vo['TcID'] ==$TcID['TcID']) echo "selected='selected'";?>>{$TcID['Name']}</option>
+						</volist>					
+					</select></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>首次检测:</B><BR>
+					</td>
+					<td class="entry cftype-Freeform"><input name="StartTime"
+						size="16" value="{$vo.StartTime}" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" /></td>
+					<td class="cflabel cftype-Select"><B>处理期限:</B><BR>
+					</td>
+					<td class="entry cftype-Select"><input name="DueTime"
+						size="16" value="{$vo.DueTime}" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" /> <!--  <select name="DueTime"
+					id="DueTime">
+					<option value="24">24h</option>
+					<option value="48">48h</option>
+				</select>--></td>
+				</tr>
+			<!--  	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform cfname-ip"><B>源IP:</B><BR>
+					</td>
+					<td class="entry cftype-Freeform cfname-ip"><textarea
+						id="ThreatSourceIps" name="ThreatSourceIps" class="CF-13-Edit"
+						wrap="off" cols="15" rows="5">58.169.193.12</textarea></td>
+					<td class="cflabel cftype-Freeform cfname-ip"><B>宿IP:</B><BR>
+					</td>
+					<td class="entry cftype-Freeform cfname-ip"><textarea
+						id="ThreatTargetIPs" class="CF-13-Edit" wrap="off" cols="15"
+						rows="5" name="ThreatTargetIPs">58.169.193.12</textarea></td>
+				</tr>
+				-->
+			
+				<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁源IP:</B></td>
+						<td class="value"><a href="__URL__/threatIP/flag/1/id/{$vo.CaseId}" target="_blank">{$vo.ThreatSrcIPList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁源域名:</B></td>
+						<td class="value"><a href="__URL__/threatDomain/flag/1/id/{$vo.CaseId}" target="_blank">{$vo.ThreatSrcDomainList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁宿IP:</B></td>
+						<td class="value"><a href="__URL__/threatIP/flag/0/id/{$vo.CaseId}" target="_blank">{$vo.ThreatDstIPList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁宿域名:</B></td>
+						<td class="value"><a href="__URL__/threatDomain/flag/0/id/{$vo.CaseId}" target="_blank">{$vo.ThreatDstDomainList}</a></td>
+					</tr>
+			<!--  	<tr class="edit-custom-field">
+					<td class="labeltop"><B>描述:</B></td>
+					<td colSpan="3"><label>{$vo.Phenomenon}</label></td>
+				</tr>
+				--><!-- 原为“原因“ 现为”描述“  -->
+				<tr class="edit-custom-field">
+					<td class="labeltop"><B>描述:</B></td>
+					<td colSpan="3"><textarea id="Note" cols="80"
+						rows="5" name="Note">{$vo.Note}</textarea></td>
+				</tr>
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align: center; margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="保存更改" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+			</table>
+			<hr class="clear" />
+			</div>
+			</form>
+		</div>
+			</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

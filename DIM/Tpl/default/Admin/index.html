@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>首页</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>单位安全状态</a></span></div>
+<div class="titlebox-content ">
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">单位</th>
+			<th class="collection-as-table">网站后门</th>
+			<th class="collection-as-table">被攻破主机</th>	
+			<th class="collection-as-table">僵尸网络主机</th>	
+			<th class="collection-as-table">DDOS攻击</th>			
+			<th class="collection-as-table">潜在安全威胁</th>
+			<th class="collection-as-table">僵尸网络控制服务器（外部）</th>
+			<th class="collection-as-table">未处理</th>
+			<th class="collection-as-table">已处理</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="vo">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td class="collection-as-table">{$vo['UnitName']}</td>
+              <td class="collection-as-table-break">{$vo['back_door']}</td>
+              <td class="collection-as-table">{$vo['broken_host']}</td>   
+               <td class="collection-as-table">{$vo['botnet_net']}</td>           
+              <td class="collection-as-table-break">{$vo['ddos']}</td>
+              
+              <td class="collection-as-table-break">{$vo['potential_threat']}</td>
+              <td class="collection-as-table">{$vo['out_botnet']}</td>   
+               <td class="collection-as-table">{$vo['open']}</td>           
+              <td class="collection-as-table-break">{$vo['resolved']}</td>
+		</tr>
+		</volist>
+	</tbody>
+</table>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

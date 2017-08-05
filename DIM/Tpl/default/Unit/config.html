@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<include file="Public:calendar" />
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>单位配置</a></span></div>
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" action="__URL__/insert" >
+<table  border="0" cellspacing="0" cellpadding="0" style="margin-left:5%;"
+	width="90%">
+	<tbody>
+	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>单位名:</B><br />
+					</td>
+					<td class="entry cftype-Freeform"><input  name="UnitName" id="UnitName"
+						size="20" /></td>								
+				</tr>							
+				<tr>
+						<td colspan="2">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align:center;margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="保存" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+</table>
+</form>
+</div>
+</div>
+
+<div class="titlebox-content ">
+<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><form enctype="multipart/form-data" 
+id="form2" name="form2" method="post" action="__URL__/config" ><label>单位名称:</label><input name="UnitName" id="UnitName" type="text" size="30"></input><input class="button" 
+							value="搜索" type="submit" "/></form></div>
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">单位名称</th>
+			<th class="collection-as-table">状态</th>	
+			<th class="collection-as-table">操作</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="unitList">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+               <td class="collection-as-table">{$vo.UnitName}</td>           
+              <td class="collection-as-table"><?php if($vo['Status']== 1) echo "正常"; else echo "已删除"; ?></td>         
+              <td class="collection-as-table"><a href="__URL__/unitEdit/id/{$vo.id}">修改</a>&nbsp;<a href="__URL__/delete/id/{$vo.id}">删除</a></td>         
+		</tr>
+		</volist>
+	</tbody>
+</table>
+<div style="text-align: center; margin-top: 5px;">{$page}</div>
+</div>
+</div>
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

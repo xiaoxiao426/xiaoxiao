@@ -1,0 +1,58 @@
+<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="evenline">
+			<th class="collection-as-table"><input type="checkbox"
+				id="EvidenceNBOSDDOSTitle"	onclick="allChangeCheckBox('EvidenceNBOSDDOS','EvidenceNBOSDDOSTitle');" /></th>
+			<th class="collection-as-table">编号</th>
+			<th class="collection-as-table">分析器</th>
+			<th class="collection-as-table">被攻击IP</th>
+			<th class="collection-as-table">攻击IP数目</th>
+			<th class="collection-as-table">攻击强度(pps)</th>
+			<th class="collection-as-table">攻击强度(kbps)</th>
+			<th class="collection-as-table">攻击时间(min)</th>
+			<th class="collection-as-table">规则</th>
+			<th class="collection-as-table">附件</th>
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;?>
+		
+		<volist id="vo" name="NBOSDDOS">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td>	<input type="checkbox" name="EvidenceNBOSDDOS" id="{$vo.EvidenceID}"/></td>
+		<td class="collection-as-table" align="right"><a href="__ROOT__/DIM/index.php/Evidence/details/EvidenceID/{$vo['EvidenceID']}" target="_blank">{$vo['EvidenceID']}</a></td>
+               <td class="collection-as-table">{$vo['AnalyzerId']}</td>
+             <td class="collection-as-table"><?php echo long2ip($vo['TargetIP'])?></td>
+             <td class="collection-as-table-break">{$vo['IPNum']}</td>
+             <td class="collection-as-table-break">{$vo['PPS']}</td>
+             <td class="collection-as-table-break">{$vo['BPS']}</td>
+             <td class="collection-as-table-break">{$vo['Duration']}</td>
+             <td class="collection-as-table-break">{$vo['Rule']}</td>
+             <td class="collection-as-table-break"><a href="__URL__/download/CaseId/{$vo['CaseID']}/dname/{$vo['AttachFile']}/rname/{$vo['AttachFile']}">{$vo['AttachFile']}</a></td>
+              <td class="collection-as-table-break" >{$vo['TimeFirst']}</td>
+              <td class="collection-as-table-break" >{$vo['TimeLast']}</td>
+		</tr>
+		</volist>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td colspan="3" style="text-align:left;">
+					<input type="checkbox" id="EvidenceNBOSDDOSAll" onclick="allChangeCheckBox('EvidenceNBOSDDOS','EvidenceNBOSDDOSAll');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="evidenceOppo"  onclick="oppoChangeCheckBox('EvidenceNBOSDDOS');"></input>反选&nbsp;&nbsp;
+					</td><?php if($pageFlag)
+					{
+					?>
+					<td colspan="6"><div style="text-align: center; ">{$page}</div></td>
+					<?php 
+}else
+{
+?>
+<td colspan="6" style="text-align:center;border-right:0px;"><a href="__ROOT__/DIM/index.php/Evidence/index/evidenceType/{$EvidenceType}/caseId/{$CaseId}" target="_blank">共{$NbosUahPortTotalCount}条</a></td>
+<td colspan="3" style="text-align:left;"></td>
+<?php 
+}
+					?></tr>
+	</tbody>
+</table>

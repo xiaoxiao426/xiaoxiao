@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="center">
+
+<div id="content">
+<!-- end of  安全-->
+
+<table class="ticket-list" border="0" cellspacing="0" cellpadding="0" 
+      width="100%" style="border:0px;">
+<tr>
+<td style="width:48%;padding-left:0.5em;"><include file="ThreatTpl:insideThreat" />
+</td><td style="width:1%;"></td>
+<td style="width:48%;padding-right:0.8em;"><include file="ThreatTpl:outsideThreat" />
+</td>
+</tr>
+</table>
+<div>
+    <div class="titlebox" style="padding-top:0em;">
+      <div   class="titlebox-content ">
+        <table class="ticket-list" border="0" cellspacing="0" cellpadding="1" 
+      width="100%">
+          <tbody>
+            <tr class="collection-as-table" >
+              <th class="collection-as-table">本单位总案件数</th>
+              <th class="collection-as-table">本单位待处理案件数</th>
+              <th class="collection-as-table">本单位已处理案件数</th>
+          <?php if($_SESSION["userPower"]>=1) { ?><th class="collection-as-table">事件数</th>
+		  <?php }?>
+            </tr>
+            <tr class="evenline">
+              <td class="collection-as-table">{$totalCase}</td>
+              <td class="collection-as-table">{$openCase}</td>
+			  <td class="collection-as-table">{$resolvedCase}</td>			  
+		<?php if($_SESSION["userPower"] >= 1) { ?><td class="collection-as-table"><?php echo $caseNum; ?></td>
+		<?php }?>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+    
+    
+   </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>协同用户</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<!-- 搜索 -->
+<div style="text-align: center;">
+<div class="titlebox" style="margin-bottom: -0.5em; margin-top: -0.5em;">
+<form method="post" id="securitySituation"
+	action="__URL__/joint">  <span class="spanRight" style="margin-right:0px;margin-top:-8px;">
+				<a style="color: blue;" href="__URL__/jointAdd">创建用户</a></span>
+	用户名：<input name="name" id="name" size="20" value="{$name}"> </input>
+	
+ <input type="submit"  value="检索" class="button" /></form>
+</div>
+</div>
+<!-- 搜索 -->
+
+<div class="titlebox">
+ <div class="titlebox-title">
+</div>
+<div class="titlebox-content ">
+<table class="ticket-list" border="0" cellspacing="0" cellpadding="1"
+	width="100%">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">用户名</th>
+			<th class="collection-as-table">电话</th>	
+			<th class="collection-as-table">邮件</th>	
+			<th class="collection-as-table">所在组织</th>		
+			<th class="collection-as-table">操作</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="list">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/User/jointEdit/id/{$vo['id']}" target="_blank">{$vo['name']}</a></td>
+              <td class="collection-as-table">{$vo['mobilePhone']}</td>
+              <td class="collection-as-table">{$vo['emailAddress']}</td>             
+               <td class="collection-as-table">{$vo['organization']}</td>   
+             <td class="collection-as-table"><a href="__URL__/jointDelete/id/{$vo['id']}"  onclick="return window.confirm('确定要删除吗？');">删除</a></td>
+             </tr>
+		</volist>
+	</tbody>
+</table>
+
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

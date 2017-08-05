@@ -1,0 +1,122 @@
+<!-- 
+背景相关
+ -->
+ <script  type="text/javascript" charset="utf-8">
+ function rollup_b_c($id)
+	{
+		var titleId= $id+"Title";
+		var contentId = $id+"Content";
+		var titleDiv = document.getElementById(titleId);
+		if(titleDiv)
+			{
+			//alert(titleDiv.className);
+			if(titleDiv.className == "titlebox")
+				{
+				titleDiv.className = "titlebox rolled-up";
+				}
+			else
+				{
+				titleDiv.className = "titlebox";
+				}
+			}
+		var contentDiv = document.getElementById(contentId);
+		if(contentDiv)
+			{
+			if(contentDiv.className == "hidden")
+			{
+				contentDiv.className = "";
+			}
+		else
+			{
+			contentDiv.className = "hidden";
+			}
+			}
+		ajaxGetBackHtml();
+	}
+ function ajaxGetBackHtml()
+ {
+	 var html = $("#caseConBack1").html();
+	
+	 if(html.length>100)
+     {
+		return;
+	 }
+	 
+	 var id = $("#caseId").val();
+	 var objs = eval("[{ id: 1, name: 'n_1' }]");
+	 if(!id)
+		 {
+		 alert("数据错误!");
+		 return ;
+		 }
+	  $.post("__URL__/ajaxGetBackRealted/", {
+		   cid : "" + id + ""
+		}, function(data) {
+			//alert(data);
+            objs = eval('['+data+']');
+           // alert(objs[0].status);
+			if(objs[0].info && objs[0].info.length > 0){
+				
+			//alert("statue:"+objs[0].status);
+				$("#caseConBack1").html(objs[0].data);
+				$("#caseConBack2").html(objs[0].info);
+				$("#caseConBack3").html(objs[0].status);
+	    	 }		
+	 	   else
+	 		 {
+	 		   alert('服务器返回数据错误!');	 		 
+	 		  }
+		},"JSON");
+ }
+ </script>
+ 
+ <div class="tickets-list-report" style="width:97%;height: 100%;">
+			<div class="titlebox rolled-up" id="detailCaseBackTitle"
+				style="width: 100%; height: 100%; padding-left: -0.5em; padding-right: 0.5em;">
+			<div class="titlebox-title"><span class="widget">
+			   <a title="visibility" onclick="rollup_b_c('detailCaseBack');"></a></span>
+				<span id="caseSpanBack1" class="left" style="margin-left:0.75em;">
+				<a href="#" id="caseTabBack1" onclick="switchBackTab('caseTabBack1','caseConBack1');this.blur();return false;">背景源相关</a></span>
+				<span  id="caseSpanBack2"  class="myLeft" style="margin-left:0.1em;">
+				<a href="#" id="caseTabBack2" onclick="switchBackTab('caseTabBack2','caseConBack2');this.blur();return false;">背景宿相关</a></span>
+				<span class="myLeft" id="caseSpanBack3" style="margin-left:0.1em;">
+				<a href="#"  id="caseTabBack3" onclick="switchBackTab('caseTabBack3','caseConBack3');this.blur();return false;">背景源/宿相关</a></span><span
+				class="spanRight" style="margin-right:7px;margin-top:9px;">
+				<!-- CaseMerge<a style="color: blue;" id="caseMerge" onclick="caseMerge('case');">合并</a> --></span></div>
+			<div id="detailCaseBackContent" class="hidden">
+			<div class="titlebox-content" id="caseConBack1"></div>
+			<!--casecon1 -->
+			<div class="titlebox-content" id="caseConBack2" style="display:none;">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+				<tbody>
+					<tr class="collection-as-table">
+						<th class="collection-as-table"><input type="checkbox" id="casebbTitle" onclick="allChangeCheckBox('casebb','casebbTitle');"/></th>
+						<th class="collection-as-table">编号</th>
+						<th class="collection-as-table">主题</th>
+						
+										
+					</tr>
+					<tr id="backDst" class='oddline'></tr>
+					
+				</tbody>
+			</table>
+			</div>
+			<!-- caseCon2 -->
+			<div class="titlebox-content" id="caseConBack3" style="display:none;">
+			<table class="ticket-list" width="100%" style="font-size: 0.7em;">
+				<tbody>
+					<tr class="collection-as-table">
+						<th class="collection-as-table"><input type="checkbox" id="casebcTitle" onclick="allChangeCheckBox('casebc','casebcTitle');"/></th>
+						<th class="collection-as-table">编号</th>
+						<th class="collection-as-table">主题</th>
+											
+					</tr>
+					<tr id="backSrcDst" class='oddline'></tr>
+					
+				</tbody>
+			</table>
+			</div> 
+			<!-- caseCon3 -->
+			</div>
+			</div>
+			</div>

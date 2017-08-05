@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>配置查看</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<style>
+.label
+{
+width:50%;
+}
+ .value
+ {
+ width:50%;
+ }
+</style>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<!-- operation config -->
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>运行管理配置</a></span></div>
+<div class="titlebox-content ">
+<table class="ticket-summary" border="0" cellspacing="0" cellpadding="1" width="100%" >
+	<tbody>
+	    <tr><td class="label">驻地系统ID：</td><td class="value">{$config["serverID"]}</td></tr>
+		<tr><td class="label">CPU使用率警报阀值：</td><td class="value">{$config["cpuThreshold"]}</td></tr>
+		<tr><td class="label">内存使用率警报阀值：</td><td class="value">{$config["memoryThreshold"]}</td></tr>
+		<tr><td class="label">硬盘使用空间阀值：</td><td class="value">{$config["diskThreshold"]}</td></tr>
+		<tr><td class="label">性能检测时间粒度：</td><td class="value">{$config["performanceCheckGran"]}</td></tr>
+		<tr><td class="label">日志发送时间粒度：</td><td class="value">{$config["logSendGran"]}</td></tr>
+		<tr><td class="label">活性报告时间粒度：</td><td class="value">{$config["activeGran"]}</td></tr>
+		<tr><td class="label">日志存档时间粒度：</td><td class="value">{$config["logThreshold"]}</td></tr>
+		<tr><td class="label">报警开关：</td><td class="value">{$config["alarmSwitch"]}</td></tr>
+	</tbody>
+</table>
+</div>
+</div>
+<!-- end of operation config -->
+
+
+
+<div class="titlebox">
+ <div class="titlebox-title"><span class="left"><a>进程管理配置</a></span></div>
+<div class="titlebox-content ">
+<table class="ticket-list" border="0" cellspacing="0" cellpadding="1" width="100%" >
+	<tbody>
+	<tr class="collection-as-table">
+			<th class="collection-as-table">进程名</th>
+			<th class="collection-as-table">进程命令</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="processConfig">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+              <td class="collection-as-table"><a>{$vo['description']}</a></td>
+              <td class="collection-as-table">{$vo['cmd']}</td>   
+            </tr>
+		</volist>
+	</tbody>
+</table>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

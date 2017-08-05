@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件检索</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function TcIdChangeTid(id)
+{
+	$("#TID").empty();
+	$("#TID").prepend("<option value=''>-</option>");
+	$.post("__URL__/getTypeById/", {
+		id : "" + id + ""
+	}, function(data) {
+		if(data.data==null){
+	 		   return;
+	 	   }else if(data.status==1){
+	 		  
+	    		 data=data.data;		
+	    		 for(var i=0;i<data.length;i++){
+	   				$("#TID").append("<option value='"+data[i].TID+"'>"+data[i].Name+"</option>");
+	    		 }      	 
+	    	 }		    	     	 
+	},"json");
+}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center">
+<include file="Public:top" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<div style="text-align: center;">
+<div class="titlebox" style="margin-bottom: -0.5em; margin-top: -0.5em;">
+<form method="post" id="securitySituation"
+	action="__URL__/index"> 
+	<table style="text-align:left;margin-left:20%;">	
+	<tr>
+	<td>
+	威胁分类: </td><td><select id="TcID" name="TcID"  onchange="TcIdChangeTid(this.value)"
+	style="width: 7em; ">
+	<option value="" >全部</option>
+	<volist id="TcID" name="threatClassType">
+	<option value="{$TcID['TcID']}" <?php if($curTCID ==$TcID['TcID']) echo "selected='selected'";?>>{$TcID['Name']}</option>
+	</volist>
+</select>
+	</td>
+	<td>
+	威胁类别: </td><td><select id="TID" name="TID" style="width:7em; ">
+	<option value="" >全部</option>
+	<volist id="TID" name="threatType">
+	<option value="{$TID['TID']}" <?php if($curTID ==$TID['TID']) echo "selected='selected'";?>>{$TID['Name']}</option>
+	</volist>
+</select>
+	</td>	
+	</tr>
+	<tr>
+	<td>主题:</td><td colspan=5><input type="text" id="Subject" name="Subject" size=30 value="{$Subject}"></input></td>
+	<td><input type="submit"  value="检索" class="button" /></td>
+	</tr>
+	</table>	 
+</form>
+</div>
+</div>
+<div class="titlebox">
+<div class="titlebox-content" style="display:block;">
+<table class="ticket-list" width="98%" style="font-size: 0.7em;max-width:900px;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">编号</th>
+			<th class="collection-as-table">主题</th>
+			<th class="collection-as-table">单位</th>
+			<th class="collection-as-table">类型</th>
+			<th class="collection-as-table-break">创建日期</th>
+			<th class="collection-as-table-break">上次活动</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="list">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}/Flag/{$vo['Flag']}" target="_blank">{$vo['CaseId']}</a></td>
+              <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}/Flag/{$vo['Flag']}" target="_blank">{$vo['Subject']}</a></td>
+               <td class="collection-as-table-break">{$vo['Unit']}</td>
+              <td class="collection-as-table"><?php echo get_threat_group_name($vo['GroupID'],$vo['TID'])?></td>
+              <td class="collection-as-table-break">{$vo['StartTime']}</td>
+              <td class="collection-as-table-break">{$vo['LastTime']}</td>
+		</tr>
+		</volist>
+	</tbody>
+</table>
+<div style="text-align: center; margin-top: 5px;">{$page}</div>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

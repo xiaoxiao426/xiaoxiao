@@ -1,0 +1,37 @@
+ <!-- 入侵 -->
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet" type="text/css" />
+</head>
+<body STYLE='OVERFLOW:SCROLL;OVERFLOW-Y:HIDDEN;OVERFLOW-X:HIDDEN'>
+ <div class="titlebox" id="invasionTitle">
+      <div class="titlebox-title"><span class="widget"><a title="toggle visibility" onclick="rollup('invasion');"></a></span><span 
+      class="left"><a target="_blank"><?php if(strlen($unit)>0) echo $unit."-";?><?php echo get_threat_group_name($gid,$tid);?></a></span></div>
+      <div   class="titlebox-content" id="invasionContent">
+        <table class="ticket-list" width="100%" style="font-size: 0.8em;overflow:hidden;">
+          <tbody>
+            <tr class="collection-as-table">
+              <th class="collection-as-table">网站名</th>
+              <th class="collection-as-table-break">涉及网页数</th>
+              <th class="collection-as-table-break">检测到活跃周期数</th>
+              <th class="collection-as-table">开始日期</th>
+              <th class="collection-as-table">最近活跃</th>
+            </tr>
+            <?php $myCount = 0; ?>
+         <volist id="vo" name="list">
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo "class='evenline'";?> >
+              <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['Subject']}</a></td>
+              <td class="collection-as-table"><a>{$vo['ReserverValue1']}</a></td>
+              <td class="collection-as-table"><a>{$vo['ReserverValue2']}</a></td>
+              <td class="collection-as-table-break">{$vo['StartTime']}</td>
+              <td class="collection-as-table-break">{$vo['LastTime']}</td>
+		</tr>
+		</volist>
+          </tbody>
+        </table>
+        <div style="text-align:center;margin-top:5px;">{$page}</div>
+      </div>
+    </div> 
+    </body>
+    </html>

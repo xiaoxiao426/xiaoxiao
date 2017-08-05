@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>协同用户编辑</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script  language="javascript">
+function checkForm(form)
+{
+	if(form.name.value.length == 0)
+		{
+		alert("姓名不能为空!");
+		form.name.focus();
+		return false;
+		}
+	if(form.password.value.length ==0 || form.repass.value.length ==0)
+		{
+		form.password.focus();
+		alert("密码不能为空");
+		return false;
+		}
+	if(form.emailAddress.value.length ==0)
+	{
+	form.emailAddress.focus();
+	alert("密码不能为空");
+	return false;
+	}
+	
+	return true;
+	}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+		<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics">
+			<div class="titlebox-title"><span class="left">编辑协同用户
+			</span><span class="right-empty"></span></div>
+			<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" onsubmit="return checkForm(this);" 
+	action="__URL__/jointUpdate">
+	<input type="hidden" name="id" id="id" value="{$vo.id}" />
+<table  border="0" cellspacing="0" cellpadding="0"
+	width="80%" style="padding-left:10%;">
+	<tbody>
+	<tr class="edit-custom-field">
+					<td class="label"><B>用户名:</B></td>
+					<td class="value"><input class="required" id="name" name="name" value="{$vo.name}"></input></td>
+					
+				</tr>	
+	<tr class="edit-custom-field">
+					<td class="label"><B>真实姓名:</B></td>
+					<td class="value"><input id="realName" name="realName" value="{$vo.realName}"></input></td>
+					<td class="label"><B>邮箱地址:</B></td>
+					<td class="value"><input class="required" id="emailAddress" name="emailAddress"  value="{$vo.emailAddress}"></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>所在组织:</B></td>
+					<td class="value"><select name="organization" id="organization">
+					<option value="">-</option>
+					<volist id="voo" name="list">
+					<option value="{$voo.OrgName}" <?php if($voo['OrgName'] == $vo['organization'] ) echo 'selected';?>>{$voo.OrgName}</option>
+					</volist>
+					</select></td>
+					<td class="label"><B>家庭电话:</B></td>
+					<td class="value"><input id="homePhone" name="homePhone"  value="{$vo.homePhone}"></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>工作电话:</B></td>
+					<td class="value"><input id="workPhone" name="workPhone"  value="{$vo.workPhone}"></input></td>
+					<td class="label"><B>移动电话:</B></td>
+					<td class="value"><input id="mobilePhone" name="mobilePhone" value="{$vo.mobilePhone}"></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>所在省:</B></td>
+					<td class="value"><input id="province" name="province" value="{$vo.province}"></input></td>
+					<td class="label"><B>所在城市:</B></td>
+					<td class="value"><input id="city" name="city" value="{$vo.city}"></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>地址:</B></td>
+					<td class="value"><input id="address" name="address" value="{$vo.address}"></input></td>
+					<td class="label"><B>邮编:</B></td>
+					<td class="value"><input  id="zip" name="zip" value="{$vo.zip}"></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field" >
+					<td class="label"><B>备注:</B></td>
+					<td class="value" colspan="2"><textarea  cols="40" rows="3" id="comment" name="comment" >{$vo.comment}</textarea></td>
+				</tr>
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align: center; margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="保存更改" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+</table>
+</form>
+			</div>
+			</div>
+
+
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

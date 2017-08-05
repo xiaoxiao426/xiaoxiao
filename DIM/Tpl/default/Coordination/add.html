@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script language="javascript">
+function uploadComplete(uploadIds,html)
+{
+	   var idAl = document.getElementById('uploadIds').value;
+	   idAl += "," + uploadIds;
+    document.getElementById('uploadIds').value = idAl;      
+    var testJson =  eval('(' + html + ')');
+    var i = 1;      
+    var newHtml="";
+    for (var p in testJson) {    
+ 	   var id = testJson[p]['id'];
+ 	   var name = testJson[p]['name'];
+ 	   newHtml += "<div id=\"attach_"+id+"\"><A>"+name+"</A><IMG SRC=\"__PUBLIC__/Images/del.gif\" WIDTH=\"20\" HEIGHT=\"20\"  onclick=\"delAttach("+id+");\" BORDER=\"0\" ALT=\"删除附件\"  style=\"cursor:hand\" align=\"absmiddle\"></div>";
+		 // test += testJson[i.toString()]['id']+"\t"+testJson[i]['name'];
+		  i++;
+		 }  
+    
+    var htmlAl = document.getElementById('myAttachList').innerHTML;
+    htmlAl += newHtml;
+    document.getElementById('myAttachList').innerHTML = htmlAl; 
+  //  alert(newHtml);
+    document.getElementById('upload').reset();
+}
+
+function delAttach(id)
+{
+	   //alert(id);
+	   $.post("__URL__/deleteAttach/", {
+			id : "" + id + ""
+		}, function(data) {
+			if(data.status==1){
+				  document.getElementById('attach_'+id).style.display = "none";
+		 		   //删除页面的id,解析id
+		 		   var idA = document.getElementById('uploadIds').value; 
+		 		   var ids = new Array();
+		 		     ids=idA.split(",");
+		 		     idA = "";
+		 		    for (var i=0;i<ids.length ;i++ )
+		 		    	{
+		 		    	if(id == ids[i])
+		 		    		{
+		 		    		continue;
+		 		    		}
+		 		    	idA += ids[i]+",";
+		 		    	}
+		 		   document.getElementById('uploadIds').value = idA;	 		   
+		 			alert('删除成功!');
+	    	 }		
+	 	   else
+	 		 {
+	 		   alert('删除失败!');	 		 
+	 		  }
+		},"json");
+}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<div class="titlebox">
+<div class="titlebox-title"><span class="left">创建协查请求</span><span
+	class="right-empty"></span></div>
+
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" method="post"
+	action="__URL__/insert"><input name="Type" value="EmailSend"
+	type="hidden" /> <input name="CaseId" id="CaseId" value="{$vo.CaseId}" type="hidden" />
+	<input name="baseId" id="baseId" value="{$vo.id}" type="hidden"></input>
+	<input name="uploadIds" id="uploadIds" value=""
+	type="hidden" />
+	<input type="hidden" id="rid" name="rid" value="{$rid}"></input>
+<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr>
+			<td class="label"><b>事件:</b></td>
+			<td class="value"><a target="_blank"
+				href="__ROOT__/DIM/index.php/Incident/details/id/{$vo.id}">{$vo.Subject}</a></td>
+		</tr>
+		<tr>
+			<td class="label"><b>拥有人:</b></td>
+			<td class="value">{$vo.name}</td>
+		</tr>
+		<tr>
+			<td class="label"><b>主题:</b></td>
+			<td class="value" colspan="2"><input name="Subject" size="60"
+				maxsize="100" value="{$vo.Subject}  [#{$vo.CaseId}]" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>通信人:</b></td>
+			<td class="value">
+			<select name="ReceiverAddress" id="ReceiverAddress">
+			<volist id="vo" name="userList">
+			<option value="{$vo.emailAddress}">{$vo.emailAddress}</option>
+			</volist>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="label"><b>抄送:</b></td>
+			<td class="value"><input name="Cc" size="40" value="" /></td>
+		</tr>
+		<!--  	<tr>
+			<td>&nbsp;</td>
+			<td colspan="2">
+			<table>
+				<tbody>
+					<tr>
+						<td><b>签名:</b></td>
+						<td><input
+							name="sign" value="1" type="checkbox" /></td>
+						<td><b>加密:</b></td>
+						<td><input
+							name="encrypt" value="1" type="checkbox" /></td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>-->
+		<tr>
+			<td class="labeltop"><b>消息:</b></td>
+			<td colspan="2"><textarea id="Content" cols="72" rows="15"
+				name="Content"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div class="submit" style="text-align: center;">
+			<div class="extra-buttons"></div>
+			<div class="buttons"><span class="caption"></span><input
+				class="button" name="create" value="创建" type="submit" /></div>
+			<div class="submit-clear"></div>
+			</div>
+			</td>
+		</tr>
+
+	</tbody>
+</table>
+<hr class="clear" />
+</form>
+<form id="upload" method="post" action="__URL__/upload/"  enctype="multipart/form-data" target="iframeUpload">
+<input name="id" type="hidden" />
+<input type="hidden" name="ajax" value="1" />
+<input type="hidden" name="_uploadSavePath" value="<?php echo __ROOT__.'/Public/Uploads/';?>" />
+<input type="hidden" name="_uploadFileResult" value="result" />
+<input type="hidden" name="_uploadFormId" value="upload" />
+<input type="hidden" name="_uploadFileSize" value="-1" />
+<input type="hidden" name="_uploadResponse" value="uploadComplete" />
+<input type="hidden" name="_uploadFileVerify" value="{$verify}" />
+<div id="titlebox" class="titlebox-content" style="padding-top:0px;margin-top:-10px;">
+	<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr class="edit-custom-field">
+					<td class="label"><B>附加档案:</B></td>
+					<td class="value" colSpan="2">				
+              <iframe name="iframeUpload" src="" width="350" height="35" frameborder=0  scrolling="no" style="display:none;" ></iframe>
+            <input type="file"	name="file" /> <input type="submit" value="添加" /></td>
+		</tr>
+		<tr class="edit-custom-field">
+		<td class="label"><B>档案列表:</B></td>
+		<td class="value" colSpan="2"><div id="myAttachList"></div></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+</form>
+
+</div>
+</div>
+
+</div>
+<!-- end of 待处理事件-->
+<include file="Public:footer" />
+</div>
+</body>
+</html>

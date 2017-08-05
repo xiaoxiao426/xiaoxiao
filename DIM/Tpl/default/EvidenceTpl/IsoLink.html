@@ -1,0 +1,52 @@
+<table class="ticket-list" width="100%" style="font-size: 0.7em;overflow:hidden;">
+	<tbody>
+		<tr class="evenline">
+			<th class="collection-as-table"><input type="checkbox"
+				id="evidenceIsoLinkTitle"	onclick="allChangeCheckBox('evidenceIsoLink','evidenceIsoLinkTitle');" /></th>
+			<th class="collection-as-table">分析器</th>
+			<th class="collection-as-table">类型</th>
+			<th class="collection-as-table">站点名</th>
+			<th class="collection-as-table">链接网址</th>
+			<th class="collection-as-table">客户IP</th>
+			<th class="collection-as-table">服务器IP</th>
+			<th class="collection-as-table">首次检测</th>
+			<th class="collection-as-table">最近活跃</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="IsoLink">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td>	<input type="checkbox" name="evidenceIsoLink" id="{$vo.EvidenceID}"/></td>
+              <td class="collection-as-table">{$vo['AnalyzerId']}</td>
+              <td class="collection-as-table"><?php echo get_evidence_type_name($vo['EvidenceType']);?></td>
+             <td class="collection-as-table-break">{$vo['SiteName']}</td>
+             <td class="collection-as-table-break">{$vo['IsoLinkUrl']}</td>
+             <td class="collection-as-table-break"><?php echo long2ip($vo['ClientIP'])?></td>
+             <td class="collection-as-table-break"><?php echo long2ip($vo['ServerIP'])?></td>
+              <td class="collection-as-table-break" >{$vo['TimeFirst']}</td>
+              <td class="collection-as-table-break" >{$vo['TimeLast']}</td>
+		</tr>
+		</volist>
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+			<td colspan="3" style="text-align:left;">
+					<input type="checkbox" id="evidenceIsoLinkAll" onclick="allChangeCheckBox('evidenceIsoLink','evidenceIsoLinkAll');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="evidenceOppo"  onclick="oppoChangeCheckBox('evidenceIsoLink');"></input>反选&nbsp;&nbsp;
+					</td>									<?php if($pageFlag)
+					{
+					?>
+					<td colspan="7"><div style="text-align: center; ">{$page}</div></td>
+					<?php 
+}else
+{
+?>
+<td colspan="5" style="text-align:center;border-right:0px;"><a href="__ROOT__/DIM/index.php/Evidence/index/evidenceType/{$EvidenceType}/caseId/{$CaseId}" target="_blank">共{$IsoLinkTotalCount}条</a></td>
+<td colspan="2" style="text-align:left;"></td>
+<?php 
+}
+					?>					
+					</tr>
+	</tbody>
+</table>

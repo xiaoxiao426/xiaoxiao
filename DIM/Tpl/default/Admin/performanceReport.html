@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>性能报告</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function SetCwinHeight(id){
+	var bobo=document.getElementById(id); //iframe id
+	if (document.getElementById){    //如果支持DOM方法
+	   if (bobo && !window.opera){   // frame如果不为空
+	    if (bobo.contentDocument && bobo.contentDocument.body.offsetHeight) // 判断浏览器
+	    {
+	     bobo.height = bobo.contentDocument.body.offsetHeight;
+	    }
+	    else if(bobo.Document && bobo.Document.body.scrollHeight){	    
+	     bobo.height = bobo.Document.body.scrollHeight+80;
+	    }
+	   }
+	}
+	}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<iframe src="../../../../CHAIRS/Admin/performance_report.php" width="100%" height="800px" frameborder="0" onload="SetCwinHeight('cpuPerfomance')"  id="cpuPerfomance" scrolling="no"></iframe>
+</div>
+<include file="Public:footer" /></div>
+</body>
+</html>

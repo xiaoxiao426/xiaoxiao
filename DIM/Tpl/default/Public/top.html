@@ -1,0 +1,8 @@
+<?php 
+if($_SESSION["userPower"] == 2  || $_SESSION["userPower"] == 3) {?>
+<include file="Public:topA" />
+<?php } else if($_SESSION["userPower"] == 1){?>
+<include file="Public:topU" />
+<?php } else if($_SESSION["userPower"] == 0){?>
+<include file="Public:topC" />
+<?php }?>

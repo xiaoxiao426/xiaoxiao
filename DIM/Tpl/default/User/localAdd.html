@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>本地用户添加</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script  language="javascript">
+function checkForm(form)
+{
+	if(form.name.value.length == 0)
+		{
+		alert("姓名不能为空!");
+		form.name.focus();
+		return false;
+		}
+	if(form.password.value.length ==0 || form.repass.value.length ==0)
+		{
+		form.password.focus();
+		alert("密码不能为空");
+		return false;
+		}
+	if(form.emailAddress.value.length ==0)
+	{
+	form.emailAddress.focus();
+	alert("密码不能为空");
+	return false;
+	}
+	
+	return true;
+	}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>创建本地用户</a></span></div>
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" onsubmit="return checkForm(this);" 
+	action="__URL__/localInsert">
+<table  border="0" cellspacing="0" cellpadding="0"
+	width="100%">
+	<tbody>
+	<tr>
+		<td colspan="4">
+		<div class="submit">
+		<div class="extra-buttons"></div>
+		<div class="buttons" style="text-align: center; margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="添加" type="submit" /></div>
+		<div class="submit-clear"></div>
+		</div>
+		</td>
+	</tr>
+	<tr class="edit-custom-field">
+					<td class="label"><B>用户名:</B></td>
+					<td><input class="required" id="name" name="name" ></input></td>
+					<td class="label"><B>密码:</B></td>
+					<td><input class="required" id="password" name="password" ></input></td>
+				</tr>
+	<tr class="edit-custom-field">
+					<td class="label"><B>确认密码:</B></td>
+					<td><input class="required" id="repass" name="repass" ></input></td>
+					<td class="label"><B>权限:</B></td>
+					<td><select id="power" name="power">
+					<option value="0">单位组员</option>
+					<option value="1">组员</option>
+					<option value="2">组长</option>
+					</select>					
+					</td>
+				</tr>	
+	<tr class="edit-custom-field">
+					<td class="label"><B>真实姓名:</B></td>
+					<td><input id="realName" name="realName" ></input></td>
+					<td class="label"><B>邮箱地址:</B></td>
+					<td><input class="required" id="emailAddress" name="emailAddress" ></input>					
+					</td>
+				</tr>
+				
+				<tr class="edit-custom-field">
+					<td class="label"><B>移动电话:</B></td>
+					<td><input id="mobilePhone" name="mobilePhone" ></input>					
+					</td>
+					<td class="label"><B>工作电话:</B></td>
+					<td><input id="workPhone" name="workPhone" ></input></td>
+				</tr>
+				<tr class="edit-custom-field">					
+					<td class="label"><B>所在省:</B></td>
+					<td><input id="province" name="province" ></input></td>
+					<td class="label"><B>所在城市:</B></td>
+					<td><input id="city" name="city" ></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>地址:</B></td>
+					<td><input id="address" name="address" ></input></td>
+					<td class="label"><B>邮编:</B></td>
+					<td><input  id="zip" name="zip" ></input>					
+					</td>
+				</tr>
+				<tr class="edit-custom-field" >
+					<td class="label"><B>自动汇报:</B></td>
+					<td ><select id="AutoFlag" name="AutoFlag">
+					<option value="0">否</option>
+					<option value="1">是</option>					
+					</select></td>
+					<td class="label"><B>备注:</B></td>
+					<td colspan="1"><textarea  cols="20" rows="3" id="comment" name="comment" ></textarea></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label" style="width:70px;"><B>所在组织:</B></td>
+					<td colspan=3></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td colspan=4>					
+					<table width="95%" style="margin-left:5%;">
+					<?php 
+for($i=0;$i<count($UnitList);$i++)
+{
+if($i%3==0) echo "<tr style='min-width:300px;'>";
+echo "<td><input name='UnitList[]' type='checkbox' value='".$UnitList[$i]['id']."' />".$UnitList[$i]['UnitName']."</td>";
+if($i%3==2) echo "</tr>";
+}
+					?>
+					</table>
+					</td>
+					
+				</tr>	
+				
+				</tbody>
+</table>
+</form>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

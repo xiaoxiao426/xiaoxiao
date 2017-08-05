@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+/*全选*/
+function allChangeCheckBox(checkName,idName)
+{
+    var arrSon = document.getElementsByName(checkName);
+    var cbAll = document.getElementById(idName);
+    var tempState=cbAll.checked;
+
+    for(i=0;i<arrSon.length;i++) 
+    {
+    	if(arrSon[i].checked != tempState)
+    	{
+    		  arrSon[i].checked = tempState;
+    	}
+      }
+}
+		
+/*反选*/
+function oppoChangeCheckBox(checkName)
+{
+	 var arrSon = document.getElementsByName(checkName);
+	 for(i=0;i<arrSon.length;i++) 
+	 {	     
+	      arrSon[i].click();
+	 }	    
+}
+
+function getChecked(checkName)
+{
+	 var arrSon = document.getElementsByName(checkName);
+	 var str="";
+	 for(i=0;i<arrSon.length;i++) 
+	 {
+	    	if(arrSon[i].checked == true)
+	    	{
+	    		str += arrSon[i].id+",";
+	    	}
+	 }
+	 return str;	 
+}
+//误报		
+function errorReport(checkName)
+{
+	var checkArr = checkName.split(",");
+	var strId="";
+	for(i=0;i<checkArr.length;i++)
+	{
+	if(checkArr[i].length > 0)
+		{
+		var str = "evidence"+checkArr[i];
+		strId += getChecked(str);
+		}		
+	}
+	if(strId.length == 0)
+	{
+	alert("请选择！");
+	return;
+	}
+	$.post("__URL__/errorReport/id/"+strId, {
+			}, function(data) {
+			if(data.data==null){
+				alert("删除失败!");
+			   return;
+			 }else if(data.status==1){
+			     data=data.data;
+			     alert("删除成功!");
+			     window.location.reload();
+			     }else
+			    	 {
+			    	 alert("删除失败!");
+			    	 }
+	},"json");	
+}
+
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+			<div class="tickets-list-report" style="width:97%;height: 100%;">
+			<div class="titlebox" id="detailEvidenceTitle"
+				style="width: 100%; height: 100%; padding-left: -0.5em; padding-right: 0.5em;">
+			<div class="titlebox-title"><span class="widget"><a
+				title="toggle visibility" onclick="rollup('detailEvidence');"></a></span><span class="left">证据列表</span><span
+				class="spanRight" style="margin-right:7px;margin-top:9px;"><a style="color: blue;" href="__ROOT__/DIM/index.php/Evidence/add/CaseId/{$CaseId}">增加&nbsp;</a><a style="color: blue;" onclick="errorReport('{$evidenceName}');">误报&nbsp;</a></span></div>
+			<div class="titlebox-content" id="detailEvidenceContent">
+			<?php 
+			$i = 0;
+            for($ei=0;$ei<sizeof($evidenceType);$ei++)
+			{
+            switch($evidenceType[$ei]['EvidenceType'])
+				{
+					case 0:
+						break;
+						/* EvidenceABNMDomain*/
+					case 1:
+			?><include file="EvidenceTpl:ABNMDomain" /><?php			
+						break;
+					case 2:
+?><include file="EvidenceTpl:FastFlux" /><?php
+						break;
+					case 3:
+?><include file="EvidenceTpl:Common" /><?php
+						break;
+					case 4:
+?><include file="EvidenceTpl:Common" /><?php
+						break;
+						
+					case 5:
+?><include file="EvidenceTpl:IsoLink" /><?php					
+						break;
+						/*EvidenceIRCBotByChannel*/
+					case 6:
+?><include file="EvidenceTpl:IrcBotByChannel" /><?php	
+						break;
+					case 7:
+?><include file="EvidenceTpl:MalWeb" /><?php
+						break;
+					case 8:
+?><include file="EvidenceTpl:SQLI" /><?php
+					break;
+					case 10:
+?><include file="EvidenceTpl:NBOSDDOS" /><?php
+						break;
+					case 101:
+?><include file="EvidenceTpl:Suricata" /><?php
+						break;
+					default:
+?><include file="EvidenceTpl:Common" /><?php
+						break;
+				}
+}
+			?>
+			</div>
+			</div>
+			</div>				
+<!-- end of 待处理事件-->
+</div>
+<include file="Public:footer" /></div>
+</body>
+</html>

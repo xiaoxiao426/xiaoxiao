@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件分配</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<include file="Public:calendar" />
+<script language="javascript">
+function delAttach(id)
+{
+	   //alert(id);
+	   $.post("__URL__/deleteAttach/", {
+			id : "" + id + ""
+		}, function(data) {
+			if(data.status==1){
+				  document.getElementById('attach_'+id).style.display = "none";
+		 		   //删除页面的id,解析id
+		 		  	   
+		 			alert('删除成功!');
+	    	 }		
+	 	   else
+	 		 {
+	 		   alert('删除失败!');	 		 
+	 		  }
+		},"json");
+}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+
+
+
+			<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics ">
+			<div class="titlebox-title"><span class="widget"><a
+				title="toggle visibility"></a></span><span class="left">分配事件
+			#{$vo.CaseId}</span><span class="right-empty"></span></div>
+			<form enctype="multipart/form-data" method="post"
+	action="__URL__/update"><input name="id" value="40"
+	type="hidden" />
+	<input name="id" name="id" value="{$vo.id}" type="hidden"/>
+			<div id="titlebox" class="titlebox-content ">
+			<table >
+				<tr class="edit-custom-field">
+					<td class="label"><B>处理人:</B></td>
+					<td><select name="CaseResponsor" id="CaseResponsor">
+					<option value="">-</option>
+					<volist name="userList" id="us">
+						<option value="{$us.id}">{$us.name}</option>
+					</volist>
+					</select></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="label"><B>主题:</B></td>
+					<td class="value" colSpan="2"><input name="Subject"
+						id="Subject" value="{$vo.Subject}" size="50" /></td>
+				</tr>
+
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Select cfname-classification"><B>分类:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select
+						name="ThreatType" id="ThreatType">
+						<volist name="threatType" id="voo">
+						<option value="{$voo.TID}" <?php if($voo['TID'] == $vo['TID']) echo "selected='selected'";?>>{$voo.Name}</option>
+						</volist>						
+					</select></td><td></td><td></td>
+<!-- 
+					<td class="cflabel cftype-Select cfname-classification"><B>状态:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select
+						name="ProgressState" id="ProgressState">
+						<option value="">&nbsp;&nbsp;-</option>
+						<option value="new" <?php if($vo['ProgressState'] =="new") echo "selected='selected'";?>>新建</option>
+						<option value="open" <?php if($vo['ProgressState'] =="open") echo "selected='selected'";?>>待定性</option>
+						<option value="waiting" <?php if($vo['ProgressState'] =="waiting") echo "selected='selected'";?>>跟踪中</option>
+						<option value="suspended" <?php if($vo['ProgressState'] =="suspended") echo "selected='selected'";?>>挂起</option>
+						<option value="resolved" <?php if($vo['ProgressState'] =="resolved") echo "selected='selected'";?>>成功解决</option>
+						<option value="abnormal" <?php if($vo['ProgressState'] =="abnormal") echo "selected='selected'";?>>异常结束</option>
+					</select></td> -->
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>起始日期:</B><BR>
+					</td>
+					<td class="entry cftype-Freeform"><input class="readonly required" name="StartTime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" value="{$vo.StartTime}" readonly="readonly" />
+						</td>
+					<td class="cflabel cftype-Select"><B>处理期限:</B><BR>
+					</td>
+					<td class="entry cftype-Select"> <select name="DueTime"
+					id="DueTime">
+					<option value="24">24h</option>
+					<option value="48">48h</option>
+				</select></td>
+				</tr>
+			<!--  	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform cfname-ip"><B>源IP:</B><BR>
+					</td>
+					<td class="entry cftype-Freeform cfname-ip"><textarea
+						id="ThreatSourceIps" name="ThreatSourceIps" class="CF-13-Edit"
+						wrap="off" cols="15" rows="5">58.169.193.12</textarea></td>
+					<td class="cflabel cftype-Freeform cfname-ip"><B>宿IP:</B><BR>
+					</td>
+					<td class="entry cftype-Freeform cfname-ip"><textarea
+						id="ThreatTargetIPs" class="CF-13-Edit" wrap="off" cols="15"
+						rows="5" name="ThreatTargetIPs">58.169.193.12</textarea></td>
+				</tr>
+				-->
+				<tr class="edit-custom-field">
+					<td class="label"><B>附加档案:</B></td>
+					<td class="value" colSpan="2">					
+					<volist name="attList" id="us">
+						<option value="{$us.id}">{$us.name}</option>
+						<div id="attach_{$us.id}"><a href="__URL__/download/CaseId/{$vo.CaseId}/dname/{$us.SaveName}/rname/{$us.FileName}">{$us.FileName}</a>
+						<img src="__PUBLIC__/Images/del.gif" width="20" height="20"  
+						onclick="delAttach({$us.id});" border="0" alt="删除附件"  
+						style="cursor:hand" align="absmiddle"></div>
+					</volist>
+					</td>
+				</tr>
+				<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁源IP:</B></td>
+						<td class="value"><a href="__ROOT__/DIM/index.php/Incident/threatIP/flag/1/id/{$vo.CaseId}" target="_blank">{$vo.ThreatSrcIPList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁源域名:</B></td>
+						<td class="value"><a href="__ROOT__/DIM/index.php/Incident/threatDomain/flag/1/id/{$vo.CaseId}" target="_blank">{$vo.ThreatSrcDomainList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁宿IP:</B></td>
+						<td class="value"><a href="__ROOT__/DIM/index.php/Incident/threatIP/flag/0/id/{$vo.CaseId}" target="_blank">{$vo.ThreatDstIPList}</a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width: 10%; min-width: 90px;"><B>威胁宿域名:</B></td>
+						<td class="value"><a href="__ROOT__/DIM/index.php/Incident/threatDomain/flag/0/id/{$vo.CaseId}" target="_blank">{$vo.ThreatDstDomainList}</a></td>
+					</tr>
+				<tr class="edit-custom-field">
+					<td class="labeltop"><B>描述:</B></td>
+					<td colSpan="3"><textarea id="Note" 
+						cols="80" rows="10" name="Note">{$vo.Note}</textarea></td>
+				</tr>
+				
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align: center; margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="保存更改" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+			</table>
+			<hr class="clear" />
+			</div>
+			</form>
+			</div>
+			</div>
+
+
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

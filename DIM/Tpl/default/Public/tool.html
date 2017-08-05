@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript">
+function openURL(url)
+{
+	window.open(url);
+}
+function myOpen(id)
+{
+	var v = document.getElementById(id);
+	if(v)
+		{
+		v = v.options[v.selectedIndex].value;
+		}
+	else
+		{
+		alert("数据获取错误!");
+		return;
+		}
+	
+	window.open(v);
+	}
+</script>
+<style>
+.label
+{
+text-align:right;
+}
+</style>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+
+<div class="titlebox">
+<div class="titlebox-title"><span class="left">工具</span><span
+	class="right-empty"></span></div>
+
+<div class="titlebox-content ">
+<table border="0" cellspacing="2" cellpadding="0">
+  <tbody>
+  <tr>
+   <td>
+    <span class="label">WHOIS:</span>
+    </td><td>
+    <span class="input">
+      <select name="server" id="whoisSel">
+        <option value="http://whois.iana.org" >IANA</option>
+        <option value="http://whois.internic.net" >INTERNIC</option>
+        <option value="http://whois.arin.net" >ARIN</option>
+        <option value="http://whois.ripe.net" >RIPE</option>
+        <option value="http://www.apnic.net/" >APNIC</option>
+      </select>
+    </span>
+    <input type="submit" onclick="myOpen('whoisSel');" value="打开" />
+	</td>
+   </tr>
+        <tr>
+   <td>
+    <span class="label">沙盒:</span></td><td>
+    <span class="input">
+    <select name="server" id="sandbox">
+        <option value="http://urlquery.net/" >URLQUERY</option>       
+      </select>
+      </span>
+    <input type="submit" onclick="myOpen('sandbox');"  value="打开" />
+	</td>
+   </tr>
+         
+	 <tr>
+   <td>
+    <span class="label">IP归属:</span></td><td>
+    <span class="input">
+    <select name="server" id="iptb">
+        <option value="https://ipdb.edu.cn/" >IPDB</option>       
+      </select>
+      </span>
+    <input type="submit" onclick="myOpen('iptb');" value="打开" />
+	</td>
+   </tr>
+     <tr>
+   <td>
+    <span class="label">搜索:</span></td><td>
+    <span class="input">
+      <select name="server" id="search">
+        <option value="http://www.google.com.hk/" >Google</option>
+        <option value="http://www.baidu.com/" >Baidu</option>
+        <option value="http://www.wiki.com/" >Wiki</option>
+      </select>
+    </span>
+    <input type="submit" onclick="myOpen('search');" value="打开" />
+	</td>
+   </tr>
+        
+	  </tbody></table>
+<hr class="clear" />
+</div>
+</div>
+</div>
+<!-- end of 待处理事件-->
+<include file="Public:footer" />
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<table class="ticket-list" width="100%" style="font-size: 0.8em;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">类型</th>
+			<th class="collection-as-table">描述</th>
+			<th class="collection-as-table">条件</th>
+			<th class="collection-as-table">响应文档</th>
+			<th class="collection-as-table">操作</th>
+		</tr>		
+		<?php $myCount = 0;?>
+		<volist id="list" name="list">
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo "class='evenline'";?> >
+			<td class="collection-as-table-break"><?php echo get_threat_class_type_name($list['TcID'])."--".get_threat_type_name($list['TID']); ?></td>   
+              <td class="collection-as-table-break">{$list.Feature}</td>           
+              <td class="collection-as-table-break">{$list.Condition}</td>  
+              <td class="collection-as-table-break"><a href='__URL__/download/dname/<?php echo urlencode($list['SaveName']); ?>/rname/<?php echo urlencode($list['FileName'])?>'>{$list['FileName']}</a></td> 
+               <td class="collection-as-table-break">
+<?php 
+$flag = false;
+for($j=0;$j<count($straList);$j++)
+{
+    if($straList[$j] == $list['id'])
+    {
+		$flag = true;
+		break;
+	}
+}
+if($flag){ ?>
+<a>报告已生成</a>
+<?php } else{ ?>
+<a style="color:blue;" href="__APP__/Strategy/insertStra/CaseId/{$CaseId}/id/<?php echo $list['id'];?>">生成报告</a>
+<?php } ?>  
+</td>   
+		</tr>
+		</volist>
+	</tbody>
+</table>

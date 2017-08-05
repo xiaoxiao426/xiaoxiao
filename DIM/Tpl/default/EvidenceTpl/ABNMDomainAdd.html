@@ -1,0 +1,56 @@
+<style>
+.label
+{
+width:13%;
+}
+</style>
+<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr>
+			<td class="label"><b>访问异常域名:</b></td>
+			<td class="value"><input class="required" name="DomainName"
+						id="DomainName" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>24h访问IP数:</b></td>
+			<td class="value"><input class="required" name="LastIPNum"
+						id="LastIPNum" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>7d访问IP数:</b></td>
+			<td class="value"><input class="required" name="HistoryIPNum"
+						id="HistoryIPNum" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>增幅:</b></td>
+			<td class="value"><input class="required" name="Addictive"
+						id="Addictive" value="" size="50" /></td>
+		</tr>
+		<tr>
+			<td class="label"><b>域名访问异常原因:</b></td>
+			<td class="value"><input class="required" name="Cause"
+						id="Cause" value="" size="50" /></td>
+		</tr>
+		<tr class="edit-custom-field">
+					<td class="label"><B>附件:</B></td>
+					<td class="value">
+            <input type="file"	name="file" />
+		</tr>
+		<tr>
+			<td class="label"><b>证据内容:</b></td>
+			<td colspan="2"><textarea id="Content" cols="72" rows="15"
+				name="Content"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div class="submit" style="text-align: center;">
+			<div class="extra-buttons"></div>
+			<div class="buttons"><span class="caption"></span><input
+				class="button" name="create" value="创建" type="submit" /></div>
+			<div class="submit-clear"></div>
+			</div>
+			</td>
+		</tr>
+
+	</tbody>
+</table>

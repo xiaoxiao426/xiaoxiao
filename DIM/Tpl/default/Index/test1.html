@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="titlebox" id="indexTitle">
+      <div class="titlebox-title"><span class="widget"><a title="toggle visibility" onclick="rollup('index');"></a></span><span 
+      class="left"><a href="__ROOT__/DIM/index.php/Incident/index" target="_blank">待处理事件</a></span><span class="spanRight"><a href="__ROOT__/DIM/index.php/Incident/index" style="color:#000;" target="_blank"><I>more</I></a></span></div>
+      <div   class="titlebox-content" id="indexContent">
+        <table class="ticket-list" width="100%" style="font-size: 0.8em;">
+          <tbody>
+            <tr class="collection-as-table">
+              <th class="collection-as-table">编号</th>
+              <th class="collection-as-table">主题</th>
+              <th class="collection-as-table">类型</th>
+              <th class="collection-as-table">状态</th>
+              <th class="collection-as-table">创建日期</th>
+              <th class="collection-as-table">到期日期</th>
+              <th class="collection-as-table">&nbsp;</th>
+            </tr>
+            <?php $myCount = 0;?>
+         <volist id="vo" name="vo">
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo "class='evenline'";?> >
+		<td class="collection-as-table"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}/Flag/{$vo['UpdateFlag']}" target="_blank">{$vo['CaseId']}</a></td>
+              <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}/Flag/{$vo['UpdateFlag']}" target="_blank">{$vo['Subject']}</a></td>
+              <td class="collection-as-table">{$vo['Name']}</td>
+              <td class="collection-as-table"><?php echo get_case_statue($vo['ProgressState']); ?></td>
+              <td class="collection-as-table-break">{$vo['StartTime']}</td>
+              <td class="collection-as-table-break">{$vo['DueTime']}</td>
+              <td class=""><font color="red"><i><?php if($vo['UpdateFlag']) echo "new";?></i></font></td>
+		</tr>
+		</volist>
+          </tbody>
+        </table>
+        <div style="text-align:center;margin-top:5px;">{$page}</div>
+      </div>
+    </div> 
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+ <!-- 僵尸网络后门 -->
+ <div class="titlebox" id="botnetTitle">
+      <div class="titlebox-title"><span class="widget"><a title="toggle visibility" onclick="rollup('botnet');"></a></span><span 
+      class="left"><a target="_blank">僵尸网络后门</a></span><span class="spanRight"><a href="__ROOT__/DIM/index.php/Threat/index/tpl/botnet" style="color:#000;" target="_blank"><I>more</I></a></span></div>
+      <div   class="titlebox-content" id="botnetContent">
+       <table class="ticket-list" width="100%" style="font-size: 0.7em;overflow:hidden;">
+          <tbody>
+            <tr class="collection-as-table">
+            <!--    <th class="collection-as-table">编号</th>-->
+			<th class="collection-as-table">主题</th>		
+			<th class="collection-as-table">事件数量</th>
+			<th class="collection-as-table">开始活动时间</th>
+			<th class="collection-as-table">最后活动时间</th>
+            </tr>
+            <?php $myCount = 0;?>
+         <volist id="vo" name="botnet">
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo "class='evenline'";?> >
+		 <!--   	<td class="collection-as-table" ><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['CaseID']}</a></td> -->
+              <td class="collection-as-table-break"><a href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}" target="_blank">{$vo['Subject']}</a></td>
+              <td class="collection-as-table-break">{$vo['EvidenceNum']}</td>
+              <td class="collection-as-table-break">{$vo['StartTime']}</td>
+              <td class="collection-as-table-break">{$vo['LastTime']}</td>
+		</tr>
+		</volist>
+          </tbody>
+        </table>
+      </div>
+    </div> 

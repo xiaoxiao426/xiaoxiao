@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件检索</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function TcIdChangeTid(id)
+{
+	$("#TID").empty();
+	$("#TID").prepend("<option value=''>-</option>");
+	$.post("__URL__/getTypeById/", {
+		id : "" + id + ""
+	}, function(data) {
+		if(data.data==null){
+	 		   return;
+	 	   }else if(data.status==1){
+	 		  
+	    		 data=data.data;		
+	    		 for(var i=0;i<data.length;i++){
+	   				$("#TID").append("<option value='"+data[i].TID+"'>"+data[i].Name+"</option>");
+	    		 }      	 
+	    	 }		    	     	 
+	},"json");
+}
+
+/*全选*/
+function allChangeCheckBox(checkName,idName)
+{
+    var arrSon = document.getElementsByName(checkName);
+    var cbAll = document.getElementById(idName);
+    var tempState=cbAll.checked;
+
+    for(i=0;i<arrSon.length;i++) 
+    {
+    	if(arrSon[i].checked != tempState)
+    	{
+    		  arrSon[i].checked = tempState;
+    	}
+    }
+}
+		
+/*反选*/
+function oppoChangeCheckBox(checkName)
+{
+	 var arrSon = document.getElementsByName(checkName);
+	 for(i=0;i<arrSon.length;i++) 
+	 {	     
+	      arrSon[i].click();
+	 }	    
+}
+
+function unique(arr) {
+    var result = [], hash = {};
+    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+        if (!hash[elem]) {
+            result.push(elem);
+            hash[elem] = true;
+        }
+    }
+    return result;
+}
+
+//获取并显示cart
+function ajaxGetCart()
+{
+	$.post("__URL__/ajaxGetCart", {
+	}, function(data) {
+	if(data.status==1){
+	     data=data.data;	     
+	     $("#addDivContent").html(data);
+	     //alert("成功!");			     
+	     }		    	     	 
+   },"json");	
+}
+/*
+ id="caseMerge" onclick="caseMerge('casea');"*  
+ */
+
+ function addToCaseMerge(checkName)
+ {
+	 var arrSon = document.getElementsByName(checkName);
+	 var str="";	
+	 var i = 0;
+	 var postStr = "";
+	 for(i=0;i<arrSon.length;i++) 
+	 {
+	    	if(arrSon[i].checked == true)
+	    	{
+	    		var temp = arrSon[i].id;
+	    		arrSon[i].checked = false;
+	    		if(temp.indexOf("NJo") > -1)
+	    			{
+	    			alert("事件"+temp+"不能合并!");
+	    			
+	    			return;
+	    			}
+	    		postStr += arrSon[i].id+","+$("#case_"+arrSon[i].id).val()+",";	    		
+	    		str += "<p><a href='__ROOT__/DIM/index.php/Incident/details/id/"+arrSon[i].id+"'>"+$("#case_"+arrSon[i].id).val()+"</a>";
+	    		str += "<img src='__PUBLIC__/Images/b_drop.png' onclick='deleteCart('"+arrSon[i].id+"');'></img></p>";
+	    	}
+	 }	 	 
+	 //alert(postStr);
+	//添加到服务器cart
+	$.post("__URL__/ajaxAddCart/str/"+postStr, {
+	}, function(data) {
+	if(data.data==null){
+		alert("fail!");
+	   return;
+	 }else if(data.status==1){
+	     
+	     }
+	 else
+		 {
+		 alert("添加失败!");
+		 }
+   },"json");	
+	
+	$("#addDivContent").append(str);	
+	
+ }
+ //清除merge后的内容
+ function clearMerge(){	
+	 $("#addDivContent").html("");
+ }
+//添加到合并
+function caseMerge()
+{		
+	$("#mergeDivA").attr("onclick","");
+	$.post("__URL__/allCaseMerge", {
+			}, function(data) {
+			if(data.data==null){
+				alert("fail!");
+			   return;
+			 }else if(data.status==1){
+			     data=data.data;			    
+			     $("#mergeDivA").attr("onclick","caseMerge();");
+			     clearMerge();
+			     alert("成功!");			     
+			     }		    	     	 
+	},"json");	
+}
+function getChecked(checkName)
+{
+	 var arrSon = document.getElementsByName(checkName);
+	 var str="";	
+	 for(i=0;i<arrSon.length;i++) 
+	 {
+	    	if(arrSon[i].checked == true)
+	    	{
+	    		str += arrSon[i].id+",";
+	    	}
+	 }
+	 
+	 return str;	 
+}
+function my_onload()
+{
+	startclock();
+	var num = window.screen.availWidth /2 + 480;
+	$("#floatDiv").css("left",num);
+	ajaxGetCart();//获取并显示chart
+}
+
+function deleteCart(id)
+{
+	$.post("__URL__/ajaxDelCart/id/"+id, {
+	}, function(data) {
+	if(data.data==null){
+		alert("fail!");
+	   return;
+	 }else if(data.status==1){
+		 ajaxGetCart();//获取并显示chart
+	     }
+	 else
+		 {
+		 alert("删除失败!");
+		 }
+   },"json");	
+}
+
+function submitForm(order,sort)
+{
+	 $("#_order").val(order);
+	 $("#_sort").val(sort);	
+	 $("#securitySituation").submit();
+}
+
+
+</script>
+<include file="Public:calendar" />
+</head>
+<body style="background: #eaeaea;" onload="my_onload();">
+<div id="floatDiv" style="background-color:rgb(240, 248, 251);z-index:20; top:290px;display:block;float:right;width:220px;position:absolute;">
+<div style="text-align:center;">
+
+<a href="#" style="color:blue;text-align:center;" onclick="caseMerge();" id="mergeDivA">合并</a>
+<hr />
+</div>
+
+<div style="text-align:center;" id="addDivContent">
+  <p><a href="javascript:alert('test');">NJ0-20123223322</a><img src="__PUBLIC__/Images/b_drop.png" onclick="deleteCart('njc');"></img></p> 
+
+</div>
+</div>
+<div id="body" class="center">
+<include file="Public:top" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<div style="text-align: center;">
+<div class="titlebox" style="margin-bottom: -0.5em; margin-top: -0.5em;">
+<form method="post" id="securitySituation"
+	action="__URL__/index"> 
+	<input type="hidden" name="_order" id="_order" value="{$order}"></input>
+    <input type="hidden" name="_sort" id="_sort" value="{$sort}"></input>
+	<table style="text-align:left;margin-left:10%;">
+	<tr><td>
+	状态: </td><td><select id="ProgressState" name="ProgressState" style="width: 10em; text-align: center;">
+	<option selected="selected" value="">所有</option>
+	<?php $cs= get_case_status_array()?>
+	<volist id="cs" name="cs">
+	<option value="{$cs.name}" <?php if($ProgressState == $cs['name']) echo "selected='selected'";?>>{$cs.dep}</option>
+	</volist>	
+</select>
+	</td>
+	<!--  
+	<td>
+	是否删除:</td><td> <select id="DeleteFlag" name="DeleteFlag"
+	style="width: 10em; text-align: center;">
+	<option value="">全部</option>
+	<option value="0" <?php if($DelFlag ==0) echo "selected='selected'";?>>正常案件</option>
+	<option value="1" <?php if($DelFlag ==1) echo "selected='selected'";?>>已删除</option>	
+	</select>
+	</td> 
+	-->
+	
+	<td>
+	所属用户:</td><td> <select id="CaseResponsor" name="CaseResponsor" style="width:10em; ">
+	<option value="-1" >全部</option>
+	<volist id="user" name="user">
+	<option value="{$user['id']}" <?php if($curResponser ==$user['id']) echo "selected='selected'";?>>{$user['name']}</option>
+	</volist>
+   </select>
+	</td> 
+	
+	<td>
+	类型: </td><td><select id="CaseType" name="CaseType"
+	style="width: 10em; text-align: center;">
+	<option value="0" <?php if($CaseType ==0) echo "selected='selected'";?>>案件</option>
+	<!--  <option value="1" <?php if($CaseType ==1) echo "selected='selected'";?>>背景事件</option>	
+	--><option value="2" <?php if($CaseType ==2) echo "selected='selected'";?>>事件</option>
+</select> 
+	</td>
+	<td></td>
+	</tr>
+	<tr>
+	<td>
+	威胁分类: </td><td><select id="TcID" name="TcID"  onchange="TcIdChangeTid(this.value)"
+	style="width: 10em; ">
+	<option value="" >全部</option>
+	<volist id="TcID" name="threatClassType">
+	<option value="{$TcID['TcID']}" <?php if($curTCID ==$TcID['TcID']) echo "selected='selected'";?>>{$TcID['Name']}</option>
+	</volist>
+</select>
+	</td>
+	<td>
+	威胁类别: </td><td><select id="TID" name="TID" style="width:10em; ">
+	<option value="" >全部</option>
+	<volist id="TID" name="threatType">
+	<option value="{$TID['TID']}" <?php if($curTID ==$TID['TID']) echo "selected='selected'";?>>{$TID['Name']}</option>
+	</volist>
+</select>
+	</td>
+<!--	<td>
+	所属用户:</td><td> <select id="CaseResponsor" name="CaseResponsor" style="width:7em; ">
+	<option value="" >全部</option>
+	<volist id="user" name="user">
+	<option value="{$user['id']}" <?php if($curResponser ==$user['id']) echo "selected='selected'";?>>{$user['name']}</option>
+	</volist>
+</select>
+	</td> -->
+	
+	<td>单位:</td><td>
+	<select id="Unit" name="Unit" style="width:10em; ">
+	<option value="" >全部</option>
+	<volist id="UnitList" name="UnitList">
+	<option value="{$UnitList['UnitName']}" <?php if($UnitName ==$UnitList['UnitName']) echo "selected='selected'";?>>{$UnitList['UnitName']}</option>
+	</volist>
+	</select>
+	</td>
+	<tr>
+	<td>主题:</td><td colspan=2><input type="text" id="Subject" name="Subject" size=25 value="{$Subject}"></input></td>
+	<td style="text-align:right;">现象:</td><td colspan=2>
+	<input type="text" id="Phenomenon" name="Phenomenon" size=22 value="{$Phenomenon}"></input></td>
+	<td></td><td></td>
+	</tr>
+	<tr>
+	<td>时间：</td>
+	<td colspan=1><input class="readonly" name="StartTime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" value="{$StartTime}"/></td>
+						<td style="text-align:center;">~</td>
+	<td colspan=1><input class="readonly" name="LastTime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" value="{$LastTime}"/></td>
+						<td> <input type="checkbox" name="ConcernFlag" <?php if($ConcernFlag) echo 'checked'; ?> value="1"></input>单位关注</td>
+	<td style="text-align:right;"><input type="submit"  value="检索" class="button" /></td>
+	</tr>	
+	</table>	 
+</form>
+
+</div>
+</div>
+
+<div class="titlebox">
+<div class="titlebox-content" style="display:block;">
+<a style="color: blue;float:right;" id="caseMerge" onclick="addToCaseMerge('casea');">添加到合并</a>
+<table class="ticket-list" width="98%" style="font-size: 0.7em;max-width:900px;">
+	<tbody>
+		<tr class="collection-as-table">
+		   <th class="collection-as-table"><input type="checkbox" id="caseaTitle" onclick="allChangeCheckBox('casea','caseaTitle');"/></th>
+			  <th class="collection-as-table">编号</th> 
+			<th <?php if($order == 'Subject') {echo "onclick='submitForm(\"Subject\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"Subject\",\"1\")'"; ?> >主题</th>
+			<th class="collection-as-table">组织</th>
+			<th class="collection-as-table">类型</th>			
+			<th class="collection-as-table">状态</th>
+			<th <?php if($order == 'StartTime') {echo "onclick='submitForm(\"StartTime\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"StartTime\",\"1\")'"; ?>>创建日期</th>
+			<th <?php if($order == 'LastTime') {echo "onclick='submitForm(\"LastTime\",\"".($sort)."\")'"; if($sort) echo " class='collection-as-table asc'"; else echo " class='collection-as-table desc '";} else echo "class='collection-as-table' "."onclick='submitForm(\"LastTime\",\"1\")'"; ?>>最后活跃</th>			
+		    <?php if($_REQUEST['CaseType'] == 0 ) { echo "<th class='collection-as-table'>转换规则</th>"; }?>
+		    <th class="collection-as-table">&nbsp;</th>
+		</tr>
+		<?php $myCount = 0;
+		
+		?>
+		<volist id="vo" name="list">
+		<tr
+			<?php 
+			$threat_type = get_threat_group_name($vo['GroupID'],$vo['TID']);
+			if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> 
+			<?php if($vo['MergeType'] == 1) echo "style='color:#cc0000;'";?>
+			>
+			<td ><input type="checkbox" name="casea" id="{$vo.CaseId}"/>
+			<input type="hidden" id="case_{$vo.CaseId}" value="{$vo.Subject}-{$threat_type}" />
+			</td>
+			  
+			<td class="collection-as-table-break"><?php if($vo['StrageFlag'] == 1) echo "<span style='color:red;'>*<span>";?><a <?php if($vo['MergeType'] == 1) echo "style='color:#cc0000;'";?> href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}/Flag/{$vo['UpdateFlag']}" target="_blank">{$vo['CaseId']}</a></td>
+           
+              <td class="collection-as-table" ><a <?php if($vo['MergeType'] == 1) echo "style='color:#cc0000;'";?> href="__ROOT__/DIM/index.php/Incident/details/id/{$vo['id']}/Flag/{$vo['UpdateFlag']}" target="_blank">{$vo['Subject']}</a></td>
+               <td class="collection-as-table-break">{$vo['Unit']}</td>
+              <td class="collection-as-table"><?php echo $threat_type;?></td>
+              
+			   <td class="collection-as-table"><?php echo get_case_statue($vo['ProgressState']);?></td>
+              <td class="collection-as-table-break">{$vo['StartTime']}</td>
+              <td class="collection-as-table-break">{$vo['LastTime']}</td>       
+              <?php if($_REQUEST['CaseType'] == 0) { echo "<td class='collection-as-table-break'>".getCaseRule($vo['CaseRule'])."</td>";  } ?>
+              <td class=""><font color="red"><i><?php if($vo['UpdateFlag']) echo "new";?></i><i><?php if($vo['ConcernFlag']==1) echo "&nbsp;注";?></i></font></td>       
+		</tr>
+		</volist>
+		<tr <?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo	"class='evenline'";?> ><td colspan="8" style="text-align:left;">
+					<input type="checkbox" id="caseAlla"onclick="allChangeCheckBox('casea','caseAlla');"></input>全选&nbsp;&nbsp;
+					<input type="checkbox" id="caseOppoa"  onclick="oppoChangeCheckBox('casea');"></input>反选&nbsp;&nbsp;
+		</td></tr>
+	</tbody>
+</table>
+<div style="text-align: center; margin-top: 5px;">{$page}</div>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

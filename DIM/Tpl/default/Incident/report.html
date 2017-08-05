@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件报告</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<include file="Public:calendar" />
+<script language="javascript">
+function uploadComplete(uploadIds,html)
+{
+	   var idAl = document.getElementById('uploadIds').value;
+	   idAl += "," + uploadIds;
+    document.getElementById('uploadIds').value = idAl;      
+    var testJson =  eval('(' + html + ')');
+    var i = 1;      
+    var newHtml="";
+    for (var p in testJson) {    
+ 	   var id = testJson[i.toString()]['id'];
+ 	   var name = testJson[i.toString()]['name'];
+ 	   newHtml += "<div id=\"attach_"+id+"\"><A>"+name+"</A><IMG SRC=\"__PUBLIC__/Images/del.gif\" WIDTH=\"20\" HEIGHT=\"20\"  onclick=\"delAttach("+id+");\" BORDER=\"0\" ALT=\"删除附件\"  style=\"cursor:hand\" align=\"absmiddle\"></div>";
+		 // test += testJson[i.toString()]['id']+"\t"+testJson[i]['name'];
+		  i++;
+		 }  
+    
+    var htmlAl = document.getElementById('myAttachList').innerHTML;
+    htmlAl += newHtml;
+    document.getElementById('myAttachList').innerHTML = htmlAl; 
+  //  alert(newHtml);
+    document.getElementById('upload').reset();
+}
+
+function delAttach(id)
+{
+	   //alert(id);
+	   $.post("__URL__/deleteAttach/", {
+			id : "" + id + ""
+		}, function(data) {
+			if(data.status==1){
+				  document.getElementById('attach_'+id).style.display = "none";
+		 		   //删除页面的id,解析id
+		 		   var idA = document.getElementById('uploadIds').value; 
+		 		   var ids = new Array();
+		 		     ids=idA.split(",");
+		 		     idA = "";
+		 		    for (var i=0;i<ids.length ;i++ )
+		 		    	{
+		 		    	if(id == ids[i])
+		 		    		{
+		 		    		continue;
+		 		    		}
+		 		    	idA += ids[i]+",";
+		 		    	}
+		 		   document.getElementById('uploadIds').value = idA;	 		   
+		 			alert('删除成功!');
+	    	 }		
+	 	   else
+	 		 {
+	 		   alert('删除失败!');	 		 
+	 		  }
+		},"json");
+}
+function checkForm(form)
+{
+	if(form.Subject.value.length == 0)
+		{
+		alert("主题不能为空!");
+		form.Subject.focus();
+		return false;
+		}
+	if(form.StartTime.value.length ==0)
+		{
+		form.StartTime.focus();
+		alert("起始时间不能为空");
+		return false;
+		}
+	return true;
+	}
+	
+function TcIdChangeTid(id)
+{
+	$("#TID").empty();
+	$("#TID").prepend("<option value=''>-</option>");
+	$.post("__URL__/getTypeById/", {
+		id : "" + id + ""
+	}, function(data) {
+		if(data.data==null){
+	 		   return;
+	 	   }else if(data.status==1){
+	 		  
+	    		 data=data.data;		
+	    		 for(var i=0;i<data.length;i++){
+	   				$("#TID").append("<option value='"+data[i].TID+"'>"+data[i].Name+"</option>");
+	    		 }      	 
+	    	 }		    	     	 
+	},"json");
+}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:top" />
+
+<div style="height: 40px;"></div>
+<div id="content" style="min-height: 600px;">
+			<div class="ticket-info-basics">
+			<div class="titlebox ticket-info-basics">
+			<div class="titlebox-title"><span class="widget"></span><span class="left">创建新事件
+			</span><span class="right-empty"></span></div>
+			<form enctype="multipart/form-data" id="form1" name="form1" method="post" onsubmit="return checkForm(this);" 
+	action="__URL__/insert"><input name="uploadIds" id="uploadIds" value=""
+	type="hidden" />
+	<input name="Type" value="Local" type="hidden" />
+<input name="Creator" value="<?php echo $_SESSION[C('USER_AUTH_KEY')];?>" type="hidden" />
+			<div id="titlebox" class="titlebox-content">
+			<table >
+			<!-- 	<tr class="edit-custom-field">
+					<td class="label"><B>拥有人:</B></td>
+					<td><?php echo $_SESSION["loginUserName"];?></td>
+				</tr> -->
+				<tr class="edit-custom-field">
+					<td class="label"><B>主题:</B></td>
+					<td class="value"><input class="required" name="Subject"
+						id="Subject" value="" size="50" /></td>
+				
+				</tr>
+
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Select cfname-classification"><B>分类:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select onchange="TcIdChangeTid(this.value)"
+						name="TcID" id="TcID">
+						<option value="">-</option>		
+						<volist id="TcID" name="threatClassType">
+						<option value="{$TcID['TcID']}" >{$TcID['Name']}</option>
+						</volist>					
+					</select></td>
+
+					<td class="cflabel cftype-Select cfname-classification"><B>类型:</B></td>
+					<td class="entry cftype-Select cfname-classification"><select name="TID" id="TID">
+						<option value="">-</option>					
+					</select></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>首次发现时间:</B><br />
+					</td>
+					<td class="entry cftype-Freeform"><input class="readonly required" name="StartTime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" value="<?php echo date('Y-m-d H:i:s');?>"/></td>
+					<td class="cflabel cftype-Select"><B>最后活跃时间:</B><br />
+					</td>
+					<td class="entry cftype-Select"><input class="readonly required" name="LastTime"
+						size="20" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" readonly="readonly" value="<?php echo date('Y-m-d H:i:s');?>"/></td>
+				</tr>
+			
+				<tr class="edit-custom-field">
+					<td class="labeltop"><B>威胁源描述:</B></td>
+					<td colSpan="3"><textarea id="ThreatSrcSummary" cols="80"
+						rows="5" name="ThreatSrcSummary"></textarea></td>
+				</tr>
+				<tr class="edit-custom-field">
+					<td class="labeltop"><B>威胁源描述:</B></td>
+					<td colSpan="3"><textarea id="ThreatDstSummary" cols="80"
+						rows="5" name="ThreatDstSummary"></textarea></td>
+				</tr>
+				<!--  <tr class="edit-custom-field">
+					<td class="labeltop"><B>描述:</B></td>
+					<td colSpan="3"><textarea id="Note" 
+						cols="80" rows="10" name="Note"></textarea></td>
+				</tr>-->
+				
+				<tr>
+						<td colspan="4">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align: center; margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="保存" type="submit" /></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+			</table>
+			<hr class="clear" />
+			</div>
+			</form>
+<form id="upload" method="post" action="__URL__/upload/"  enctype="multipart/form-data" target="iframeUpload">
+<input name="id" type="hidden" />
+<input type="hidden" name="ajax" value="1" />
+<input type="hidden" name="reportTemp" value="1" />
+<input type="hidden" name="_uploadSavePath" value="<?php echo __ROOT__.'/Public/Uploads/Temp';?>" />
+<input type="hidden" name="_uploadFileResult" value="result" />
+<input type="hidden" name="_uploadFormId" value="upload" />
+<input type="hidden" name="_uploadFileSize" value="-1" />
+<input type="hidden" name="_uploadResponse" value="uploadComplete" />
+<input type="hidden" name="_uploadFileVerify" value="{$verify}" />
+<div id="titlebox" class="titlebox-content" style="padding-top:0px;margin-top:-10px;">
+	<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	<tbody>
+		<tr class="edit-custom-field">
+					<td class="label"><B>附加档案:</B></td>
+					<td class="value" colSpan="2">				
+              <iframe name="iframeUpload" src="" width="350" height="35" frameborder=0  scrolling="no" style="display:none;" ></iframe>
+            <input type="file"	name="file" /> <input type="submit" value="添加" /></td>
+		</tr>
+		<tr class="edit-custom-field">
+		<td class="label"><B>档案列表:</B></td>
+		<td class="value" colSpan="2"><div id="myAttachList"></div></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+</form>
+
+</div>
+</div>
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

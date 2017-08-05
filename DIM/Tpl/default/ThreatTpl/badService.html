@@ -1,0 +1,42 @@
+ <!--  恶意服务  -->
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet" type="text/css" />
+</head>
+<body STYLE='OVERFLOW:SCROLL;OVERFLOW-Y:HIDDEN;OVERFLOW-X:HIDDEN'>
+ <div class="titlebox" id="badServiceTitle">
+      <div class="titlebox-title"><span class="widget">
+      <!--  <a title="toggle visibility" onclick="rollup('badService');"></a>-->
+      </span><span 
+      class="left"><a target="_blank">内部威胁</a></span><span class="spanRight"></span></div>
+      <div   class="titlebox-content" id="badServiceContent">
+        <table class="ticket-list" border="0" cellspacing="0" cellpadding="1" 
+      width="100%">
+          <tbody>
+            <tr class="collection-as-table">
+              <th class="collection-as-table">分类</th>
+              <th class="collection-as-table">事件数</th>
+              <th class="collection-as-table">威胁源数</th>
+              <th class="collection-as-table">威胁宿数</th>
+            </tr>		
+			<?php $phishing['case'] = rand(1,50);$phishing['src']=rand(10,1000);$phishing['target']=rand(10,100); ?>
+		<tr class=oddline>
+		<td class="collection-as-table"><a style="color:#000;" target="_blank" href="__ROOT__/DIM/index.php/Threat/index/tpl/phishing">挂马网站</a></td>
+              <td class="collection-as-table"><?php myEcho($phishing['case']); ?></td>
+              <td class="collection-as-table"><?php myEcho($phishing['src']); ?></td>
+              <td class="collection-as-table"><?php myEcho($phishing['target']); ?></td>
+		</tr>
+		<tr class='evenline'>
+		<?php $virus['case'] = rand(1,50);$virus['src']=rand(10,1000);$virus['target']=rand(10,100); ?>
+		<td class="collection-as-table"><a style="color:#000;" target="_blank" href="__ROOT__/DIM/index.php/Threat/index/tpl/virus">后门</a></td>
+              <td class="collection-as-table"><?php myEcho($virus['case']); ?></td>
+              <td class="collection-as-table"><?php myEcho($virus['src']); ?></td>
+              <td class="collection-as-table"><?php myEcho($virus['target']); ?></td>
+		</tr>
+          </tbody>
+        </table>
+      </div>
+    </div> 
+    </body>
+    </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<style>
+.label
+{
+width:50%;
+}
+ .value
+ {
+ width:50%;
+ }
+</style>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>运行配置</a></span></div>
+<div class="titlebox-content ">
+<table class="ticket-summary" border="0" cellspacing="0" cellpadding="1" width="100%" >
+	<tbody>
+		<tr><td class="label">性能检测时间粒度：</td><td class="value">{$list["per_check_gran"]}</td></tr>
+		<tr><td class="label">性能汇报时间粒度：</td><td class="value">{$list["per_tran_gran"]}</td></tr>
+		<tr><td class="label">磁盘空间报警阀值：</td><td class="value">{$list["space_threshold"]}</td></tr>
+		<tr><td class="label">CPU占用率报警阀值：</td><td class="value">{$list["cpu_threshold"]}</td></tr>
+		<tr><td class="label">内存使用率报警阀值：</td><td class="value">{$list["mem_threshold"]}</td></tr>
+		<tr><td class="label">报警开关：</td><td class="value">{$list["alert_switch"]}</td></tr>
+		<tr><td class="label">性能日志清理周期粒度：</td><td class="value">{$list["log_clear_cycle"]}</td></tr>
+	</tbody>
+</table>
+</div>
+</div>
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

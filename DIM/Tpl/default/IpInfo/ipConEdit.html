@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function checkIP_zzjs()
+{
+	obj=document.getElementById("IP").value;
+	var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	var reg = obj.match(exp);
+	if(reg==null)
+	{
+	alert("IP地址不合法！");
+	return false;
+	}
+	else
+	{
+	return true;
+	}
+}
+
+
+function checkFindIP()
+{
+	obj=document.getElementById("IPF").value;
+	if(obj.length < 1) return true;
+	var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	var reg = obj.match(exp);
+	if(reg==null)
+	{
+	alert("IP地址不合法！");
+	return false;
+	}
+	else
+	{
+	return true;
+	}
+}
+
+
+
+</script>
+</head>
+<body style="background: #eaeaea;" onload="startclock();">
+<div id="body" class="center"><include file="Public:topA" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<include file="Public:calendar" />
+<div class="titlebox">
+ <div class="titlebox-title"><span class="widget"></span><span 
+      class="left"><a>单位关注IP</a></span></div>
+<div class="titlebox-content ">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" action="__URL__/updateConcern" >
+<input type="hidden" name="id" value="{$vo.id}" />
+<table  border="0" cellspacing="0" cellpadding="0" style="margin-left:5%;"
+	width="90%">
+	<tbody>
+	<tr>
+	<td class="cflabel cftype-Freeform"><B>单位：</B></td>
+	<td>{$vo.Unit}
+	</td>
+	</select>
+	</tr>
+	
+	<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>IP地址:</B>
+					</td>
+					<td class="entry cftype-Freeform"><?php echo long2ip($vo['IP']);?></td>								
+				</tr>
+					
+				<tr class="edit-custom-field">
+					<td class="cflabel cftype-Freeform"><B>描述:</B><br />
+					</td>
+					<td class="entry cftype-Freeform" colspan="3"><textarea id="Description" name="Description" rows="3" cols="50">{$vo.Description}</textarea></td>
+					
+				</tr>
+	
+				<tr>
+						<td colspan="2">
+						<div class="submit">
+						<div class="extra-buttons"></div>
+						<div class="buttons" style="text-align:center;margin-top: 5px;"><span
+							class="caption"></span> <input class="button" 
+							value="提交" type="submit" onclick="return checkIP_zzjs();"/></div>
+						<div class="submit-clear"></div>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+</table>
+</form>
+</div>
+</div>
+
+<!-- end of 待处理事件--></div>
+<include file="Public:footer" /></div>
+</body>
+</html>

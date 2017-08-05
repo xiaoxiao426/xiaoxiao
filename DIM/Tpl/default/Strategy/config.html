@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>事件条件配置</title>
+<link href="__PUBLIC__/Css/main-squished.css" rel="stylesheet"
+	type="text/css" />
+<script>
+function TcIdChangeTid(id)
+{
+	$("#TID").empty();
+	$("#TID").prepend("<option value=''>-</option>");
+	$.post("__URL__/getTypeById/", {
+		id : "" + id + ""
+	}, function(data) {
+		if(data.data==null){
+	 		   return;
+	 	   }else if(data.status==1){	 		  
+	    		 data=data.data;		
+	    		 for(var i=0;i<data.length;i++){
+	   				$("#TID").append("<option value='"+data[i].TID+"'>"+data[i].Name+"</option>");
+	    		 }      	 
+	    	 }		    	     	 
+	},"json");
+}
+function addCondition()
+{
+	var newRow = "<tr><td style=\"text-align:right;\"><select name=\"con\" style=\"text-align: right;\"><option value=\"AND\">AND</option><option value=\"OR\">OR</option></select></td>";
+	newRow += "<td><select name=\"pre\" style=\"text-align: center;width: 7em;\"><option value=\"\">--</option><option value=\"SUM\">Sum</option><option value=\"MAX\">Max</option>";
+	newRow +="<option value=\"MIN\">Min</option><option value=\"AVG\">Avg</option></select></td>";
+	newRow += "<td><select name=\"field\" style=\"text-align: center;\"><option >--</option>";
+	var i = 0;
+	for(i=0;i<summary_json.length;i++)
+		{
+		newRow += "<option value='" + summary_json[i]['Field'] + "'>" + summary_json[i]['Comment'] + "</option>";
+		}
+	newRow += "</select></td>";
+	newRow += "<td><select name=\"rel\" style=\"width: 7em;text-align: center;\"><option value=\"=\">=</option><option value=\">\">></option>";
+	newRow += "<option value=\">=\">>=</option><option value=\"<\"><</option><option value=\"<=\"><=</option></select></td>";
+	newRow += "<td><input name=\"cV\" size=\"20\"></input></td><td style=\"color:red;\" onclick=\"deleteTr(this)\">x</td></tr>";
+	$("#myTable tr:last").after(newRow);
+}
+//删除当前行
+function deleteTr(nowTr){
+	//多一个parent就代表向前一个标签,如果多一个parent就会删除整个table
+    $(nowTr).parent().remove();
+}
+
+function formMyCondition()
+{
+	var tcid = $("select[id='TcID']").val();
+	if(tcid == "--")
+		{
+		alert("类型不能为空!");
+		return false;
+		}
+	var condition = "";
+	var cons =$("select[name='con']") ;
+	var pres = $("select[name='pre']");
+	var fields = $("select[name='field']");
+	var rels = $("select[name='rel']");
+	var cVs = $("input[name='cV']");
+	var i = 0;
+	
+	
+	for(i=0;i<pres.length;i++)
+	{
+	   if(i!=0)
+	  {
+		   condition += " "+cons[i-1].value; 
+	  }
+	   
+	   if(fields[i].value == "")
+		  {
+		   alert("字段值不能为空!");
+		   return false;
+		   }
+	   
+	   if(pres[i].value != "")
+	   {
+		   condition += " "+pres[i].value;
+		   condition += "("+fields[i].value+")";
+	   }
+	   else
+	  {
+		   condition += " "+fields[i].value;
+	  }
+	   
+	   if(rels[i].value == "")
+		{
+		   alert("操作符不能为空!");
+		   return false;
+		}
+	   condition += " " + rels[i].value;
+	   
+	   if(cVs[i].value == "")
+		{
+		   alert("输入值不能为空!");
+		   return false;
+		}
+	   condition +=" " + cVs[i].value;	   
+	}
+	
+	//if(condition.length <=0)
+		//{
+		//alert("条件不能为空!");
+		//return false;
+		//}
+//	alert(condition);
+	$("#Condition").val(condition);
+}
+function init()
+{
+	startclock();
+}
+</script>
+</head>
+<body style="background: #eaeaea;" onload="init();">
+
+<div id="body" class="center"><include file="Public:top" />
+<div style="height: 45px;"></div>
+<div id="content" style="min-height: 600px;">
+<div style="text-align: center;">
+<div class="titlebox" style="margin-bottom: -0.5em; margin-top: -0.5em;">
+<form enctype="multipart/form-data" 
+id="form1" name="form1" method="post" action="__URL__/insert" onsubmit="return formMyCondition();">
+<input id="Condition" name="Condition" value="" type="hidden" />
+<table style="text-align: left; margin-left: 10%;" id="myTable" >
+	<tr>	
+		<td style="width:80px;">事件类型：</td>
+		<td><select id="TcID" name="TcID" onchange="TcIdChangeTid(this.value)"
+			style="width: 7em; text-align: center;">	
+			<option value="--" >--</option>
+			<volist id="TcID" name="threatClassType">
+	<option value="{$TcID['TcID']}" <?php if($curTCID ==$TcID['TcID']) echo "selected='selected'";?>>{$TcID['Name']}</option>
+	</volist>
+		</select></td>
+		<td><select id="TID" name="TID" style="width:7em; ">
+	<option value="--" >--</option>
+	<volist id="TID" name="threatType">
+	<option value="{$TID['TID']}" <?php if($curTID ==$TID['TID']) echo "selected='selected'";?>>{$TID['Name']}</option>
+	</volist>
+</select></td>
+	</tr>
+	<tr>
+	<td style="width:80px;">规&nbsp;&nbsp;&nbsp;&nbsp;则：</td>
+	<td>	
+	<select name="pre" style="text-align: center;width: 7em;">
+	<option value="" >--</option>
+	<option value="SUM">Sum</option>	
+	<option value="MAX">Max</option>    
+	<option value="MIN">Min</option> 
+	<option value="AVG">Avg</option>
+		</select>
+		</td>
+		<td>
+		<select name="field" style="text-align: center;">
+	<option value="">--</option>
+	<volist id="sList" name="sList">
+	<option value="{$sList.Field}">{$sList.Comment}</option>
+	</volist>
+		</select>
+		</td>
+		<td>
+		<select name="rel" style="width: 7em;text-align: center;">
+	<option value="=">=</option>
+	<option value=">">></option>	
+	<option value=">=">>=</option>    
+	<option value="<"><</option> 
+	<option value="<="><=</option> 
+		</select>
+		</td>
+		<td>
+		<input name="cV" size="20"></input>
+		</td>
+		<td style="color:blue;" onclick="addCondition()">+&nbsp;&nbsp;</td>
+	</tr>
+</table>
+
+<table style="text-align: left; margin-left: 10%;">
+<tr><td style="width:80px;">描&nbsp;&nbsp;&nbsp;&nbsp;述：</td><td><input name="Feature" type="text" size="72"></input></td></tr>
+<tr><td style="width:80px;">邮件正文：</td><td><textarea name="Content" rows="5" cols="55"></textarea></td><td></td></tr>
+<tr><td style="width:80px;">响应文档：</td><td><input type="file"	name="file" /></td><td></td></tr>
+<tr><td colspan="3" style="text-align:center;"><input type="submit" value="提交"></input></td></tr>
+</table>
+</form>
+
+</div>
+</div>
+<div style="width:100%;height:30px;"></div>
+<div class="titlebox-content ">
+<div id="configContent">
+  <table class="ticket-list" width="100%" style="font-size: 0.7em;">
+	<tbody>
+		<tr class="collection-as-table">
+			<th class="collection-as-table">类型</th>													
+			<th class="collection-as-table">描述</th>
+			<th class="collection-as-table">响应文档</th>
+			<th class="collection-as-table">操作</th>
+		</tr>
+		<?php $myCount = 0;?>
+		<volist id="vo" name="list">
+		<tr
+			<?php if($myCount++ %2 == 0) echo "class='oddline'"; else echo
+			"class='evenline'";?> >
+              <td class="collection-as-table-break"><?php echo get_threat_class_type_name($vo['TcID'])."-".get_threat_type_name($vo['TID']);?></td>
+               <td class="collection-as-table">{$vo.Feature}</td>           
+              <td class="collection-as-table-break"><a href='__URL__/download/dname/<?php echo urlencode($vo['SaveName']); ?>/rname/<?php echo urlencode($vo['FileName'])?>'>{$vo['FileName']}</a></td>
+              <td class="collection-as-table"><a href="__URL__/edit/id/{$vo.id}">详情</a>&nbsp;&nbsp;<a href="__URL__/delete/id/{$vo.id}">删除</a></td>         
+		</tr>
+		</volist>
+	</tbody>
+</table>
+
+</div>
+<div style="text-align: center; margin-top: 5px;">{$page}</div>
+</div>
+</div>
+<include file="Public:footer" /></div>
+</body>
+</html>
