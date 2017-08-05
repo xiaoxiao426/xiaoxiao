@@ -1,0 +1,20 @@
++----------------+------------------+------+-----+---------+----------------+
+| Field          				| Type            
+| bip           			 | int(10) unsigned 
+| cip            			| int(10) unsigned 
+| dip           			 | int(10) unsigned
+| starttime  		    | int(10) unsigned 	s 开始时间
+| timestamp_sec  | int(10) unsigned     ？  报文时戳s.
+| timestamp_usec | int(10) unsigned    ？   
+| type         			  | varchar(10)          数字对应表  
+| sport       			   | int(10) unsigned    
+| dport      			    | int(10) unsigned   
+| proto       			   | varchar(10)      				 6 ,17 TCP   UDP
+| rule          			 | int(10) unsigned      规则1  规则2
+| caplen      			   | int(10) unsigned    207 ,238,  222  报文长度
+
+| plen         			  | int(10) unsigned    167 ,198,182   tcp/udp负载长度 去掉了tcp/udp头
+
+| content     			   | longblob          二进制存储？  具体什么信息 报文负载
+| id            			 | int(20)              
+
